@@ -55,16 +55,25 @@ def Div_And_Conq(L):
             return low, high, L[low]
         else:
             mid = (low+high) // 2
-            L_low, L_high, L_sum = Find_Max_Sub_Array(L, low, mid)
-            R_low, R_high, R_sum = Find_Max_Sub_Array(L, mid+1, high)
-            C_low, C_high, C_sum = Find_Max_Crossing_Sub_Array(L, low, mid, high)
 
-            if L_sum >= R_sum and L_sum >= C_sum:
-                return L_low, L_high, L_sum
-            elif R_sum >= L_sum and R_sum >= C_sum:
-                return R_low, R_high, R_sum
-            else:
-                return C_low, C_high, C_sum
+            """this is slightly slower than the triple check if's"""
+            lst = []
+            lst.extend(Find_Max_Sub_Array(L, low, mid))
+            lst.extend(Find_Max_Sub_Array(L, mid+1, high))
+            lst.extend(Find_Max_Crossing_Sub_Array(L, low, mid, high))
+            indx_res = lst.index(max(lst[2], lst[5], lst[8]))
+            return lst[indx_res-2], lst[indx_res-1], lst[indx_res]
+
+            """this is slightly faster than the aforementioned"""
+            # L_low, L_high, L_sum = Find_Max_Sub_Array(L, low, mid)
+            # R_low, R_high, R_sum = Find_Max_Sub_Array(L, mid+1, high)
+            # C_low, C_high, C_sum = Find_Max_Crossing_Sub_Array(L, low, mid, high)
+            # if L_sum >= R_sum and L_sum >= C_sum:
+            #     return L_low, L_high, L_sum
+            # elif R_sum >= L_sum and R_sum >= C_sum:
+            #     return R_low, R_high, R_sum
+            # else:
+            #     return C_low, C_high, C_sum
 
     low,high,i = Find_Max_Sub_Array(L, 0, len(L)-1)
     return L[low:high+1]
