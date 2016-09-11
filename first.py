@@ -1,6 +1,7 @@
 # algorithms for max_sub_array finding
+
 from __future__ import division
-import sys, operator, time, doctest
+import sys, time, doctest
 from random import randint, uniform
 from functools import wraps
 
@@ -17,22 +18,20 @@ def timer(function):
         t0 = time.time()
         result = function(*args, **kwargs)
         t1 = time.time()
-        print ("Total time running %s: %s seconds" %
-               (function.func_name, str(t1 - t0))
-               )
+        print ("Total time running %s: %s seconds" %(function.func_name, str(t1 - t0)))
         return result
     return func_timer
 
 @timer
 def Brute_Force(L):
-    max = []
-    for i in range(0,len(L)):
-        for j in range(i, len(L)):
-            if sum(L[i:j]) > sum(max):
-                max = L[i:j]
-    if sum(L) > sum(max):
+    res = []
+    for i in range(0,len(L)+1):
+        for j in range(i, len(L)+1):
+            if sum(L[i:j]) > sum(res):
+                res = L[i:j]
+    if sum(L) > sum(res):
         return L
-    return max
+    return res
 
 @timer
 def Div_And_Conq(L):
@@ -59,60 +58,16 @@ def Div_And_Conq(L):
             L_low, L_high, L_sum = Find_Max_Sub_Array(L, low, mid)
             R_low, R_high, R_sum = Find_Max_Sub_Array(L, mid+1, high)
             C_low, C_high, C_sum = Find_Max_Crossing_Sub_Array(L, low, mid, high)
-        return max(L_sum, R_sum, C_sum)
 
-    return Find_Max_Sub_Array(L, 0, len(L))
-
-def div_and_conquer(L):
-    def crossingsubarray(A, low, mid, high):
-
-        negetiveinfinity = -10000000000
-        summ = 0
-        for i in range(mid, low - 1, -1):
-            summ = summ + A[i]
-            if summ > negetiveinfinity:
-                negetiveinfinity = summ
-                leftindex = i
-        left = negetiveinfinity
-
-
-        negetiveinfinity = -10000000000
-        summ = 0
-
-        for j in range(mid+1, high+1):
-            summ = summ + A[j]
-            if summ > negetiveinfinity:
-                negetiveinfinity = summ
-                rightindex = j
-        right = negetiveinfinity
-
-        return(leftindex, rightindex, left + right)
-
-    def findmaxarray(alist, low, high):
-
-        if high == low:
-            return low, high, alist[low]
-
-        else:
-
-            mid = (low+high)//2
-
-            leftlow, lefthigh, leftsum = findmaxarray(alist, low, mid)
-            rightlow, righthigh, rightsum = findmaxarray(alist, mid + 1, high)
-            crosslow, crosshigh, crosssum = crossingsubarray(alist, low, mid, high)
-
-            if leftsum >= rightsum and leftsum >= crosssum:
-                return leftlow, lefthigh, leftsum
-            elif rightsum >= leftsum and rightsum >= crosssum:
-                return rightlow, righthigh, rightsum
+            if L_sum >= R_sum and L_sum >= C_sum:
+                return L_low, L_high, L_sum
+            elif R_sum >= L_sum and R_sum >= C_sum:
+                return R_low, R_high, R_sum
             else:
-                return crosslow, crosshigh, crosssum
+                return C_low, C_high, C_sum
 
-    @timer
-    def run(L):
-        return findmaxarray(L, 0, len(L)-1)
-
-    return run(L)
+    low,high,i = Find_Max_Sub_Array(L, 0, len(L)-1)
+    return L[low:high+1]
 
 @timer
 def Kadanes_Method(L):
@@ -144,14 +99,14 @@ def main(Lim, Len):
 
 if __name__ == '__main__':
 
-    input = list_rand_int(Lim=10, Len=10, Sign=-1)
+    input = list_rand_int(Lim=10, Len=50, Sign=-1)
     print input
 
     result = Brute_Force(input)
     print result, sum(result)
 
-    L,H,maxi = div_and_conquer(input)
-    print input[L:H+1], maxi
+    result = Div_And_Conq(input)
+    print result, sum(result)
 
     result = Kadanes_Method(input)
     print result, sum(result)
