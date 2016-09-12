@@ -11,6 +11,12 @@ from functools import wraps
 list_rand_int = lambda Lim, Len, Sign=0: [randint(Sign*Lim,Lim) for x in range(0,Len)]
 list_rand_float = lambda Lim, Len, Sign=0: [uniform(Sign*Lim,Lim) for x in range(0,Len)]
 
+def wrap_text(text, highlight=None):
+    if highlight is None:
+        return str(text)
+    else:
+        return '%s%s%s' %(highlight, text, color.END)
+
 class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'
@@ -27,13 +33,12 @@ def timer(function):
 
     @wraps(function)
     def func_timer(*args, **kwargs):
-        global diff
         t0 = timeit.default_timer()
         result = function(*args, **kwargs)
         t1 = timeit.default_timer()
         diff = t1 -t0
-        print ("Total time running %s: %s milliseconds" %(color.DARKCYAN + function.func_name + color.END, color.YELLOW + str(diff*1000) + color.END))
-        return result
+        print ("Total time running %s: %s seconds" %(wrap_text(function.func_name, color.DARKCYAN), wrap_text(diff, color.YELLOW)))
+        return result, diff
     return func_timer
 
 @timer
@@ -104,18 +109,24 @@ def Kadanes_Method(L):
     return L[starti:besti]
 
 @timer
-def main(lim):
+def main(lim, method=Kadanes_Method):
 
-    summ = 0
+    total_time = 0
     for i in range(0, lim):
         input = list_rand_int(Lim=10, Len=i, Sign=-1)
-        result = Brute_Force(input)
-        print "ar:", result, '\n', 'Sum', color.RED + str(sum(result)) + color.END
+        result, run_time = method(input)
+        total_time += run_time
+        print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
+    return total_time
 
 if __name__ == '__main__':
 
-    main(500)
+    results = []
+    results.append(main(50, method=Brute_Force)[1])
+    results.append(main(50, method=Div_And_Conq)[1])
+    results.append(main(50, method=Kadanes_Method)[1])
 
+    print results
     # input = list_rand_int(Lim=10, Len=50, Sign=-1)
     # print input
     #
