@@ -1,7 +1,7 @@
 # algorithms for max_sub_array finding
 
 from __future__ import division
-import sys, time, doctest
+import sys, timeit
 from random import randint, uniform
 from functools import wraps
 
@@ -11,14 +11,28 @@ from functools import wraps
 list_rand_int = lambda Lim, Len, Sign=0: [randint(Sign*Lim,Lim) for x in range(0,Len)]
 list_rand_float = lambda Lim, Len, Sign=0: [uniform(Sign*Lim,Lim) for x in range(0,Len)]
 
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+
 def timer(function):
 
     @wraps(function)
     def func_timer(*args, **kwargs):
-        t0 = time.time()
+        global diff
+        t0 = timeit.default_timer()
         result = function(*args, **kwargs)
-        t1 = time.time()
-        print ("Total time running %s: %s seconds" %(function.func_name, str(t1 - t0)))
+        t1 = timeit.default_timer()
+        diff = t1 -t0
+        print ("Total time running %s: %s milliseconds" %(color.DARKCYAN + function.func_name + color.END, color.YELLOW + str(diff*1000) + color.END))
         return result
     return func_timer
 
@@ -56,18 +70,16 @@ def Div_And_Conq(L):
         else:
             mid = (low+high) // 2
 
+            L_low, L_high, L_sum = Find_Max_Sub_Array(L, low, mid)
+            R_low, R_high, R_sum = Find_Max_Sub_Array(L, mid+1, high)
+            C_low, C_high, C_sum = Find_Max_Crossing_Sub_Array(L, low, mid, high)
+
             """this is slightly slower than the triple check if's"""
-            lst = []
-            lst.extend(Find_Max_Sub_Array(L, low, mid))
-            lst.extend(Find_Max_Sub_Array(L, mid+1, high))
-            lst.extend(Find_Max_Crossing_Sub_Array(L, low, mid, high))
-            indx_res = lst.index(max(lst[2], lst[5], lst[8]))
-            return lst[indx_res-2], lst[indx_res-1], lst[indx_res]
+            lst = [L_low, L_high, L_sum, R_low, R_high, R_sum, C_low, C_high, C_sum]
+            index_of_result = lst.index(max(lst[2], lst[5], lst[8]))
+            return lst[index_of_result-2], lst[index_of_result-1], lst[index_of_result]
 
             """this is slightly faster than the aforementioned"""
-            # L_low, L_high, L_sum = Find_Max_Sub_Array(L, low, mid)
-            # R_low, R_high, R_sum = Find_Max_Sub_Array(L, mid+1, high)
-            # C_low, C_high, C_sum = Find_Max_Crossing_Sub_Array(L, low, mid, high)
             # if L_sum >= R_sum and L_sum >= C_sum:
             #     return L_low, L_high, L_sum
             # elif R_sum >= L_sum and R_sum >= C_sum:
@@ -91,33 +103,29 @@ def Kadanes_Method(L):
             starti, besti, best_so_far = curi, i+1, cur_best
     return L[starti:besti]
 
-def main(Lim, Len):
-    """
-    >>> main(10, 100)
-    1
-    >>> main(10, 1000)
-    1
-    >>> main(10, 2000)
-    1
-    """
-    input = list_rand_int(Lim=Lim, Len=Len, Sign=-1)
-    result = Brute_Force(input)
-    print input
-    print result
-    return 1
+@timer
+def main(lim):
+
+    summ = 0
+    for i in range(0, lim):
+        input = list_rand_int(Lim=10, Len=i, Sign=-1)
+        result = Brute_Force(input)
+        print "ar:", result, '\n', 'Sum', color.RED + str(sum(result)) + color.END
 
 if __name__ == '__main__':
 
-    input = list_rand_int(Lim=10, Len=50, Sign=-1)
-    print input
+    main(500)
 
-    result = Brute_Force(input)
-    print result, sum(result)
-
-    result = Div_And_Conq(input)
-    print result, sum(result)
-
-    result = Kadanes_Method(input)
-    print result, sum(result)
+    # input = list_rand_int(Lim=10, Len=50, Sign=-1)
+    # print input
+    #
+    # result = Brute_Force(input)
+    # print "ar:", result, '\n', 'Sum', color.RED + str(sum(result)) + color.END
+    #
+    # result = Div_And_Conq(input)
+    # print "ar:", result, '\n', 'Sum', color.RED + str(sum(result)) + color.END
+    #
+    # result = Kadanes_Method(input)
+    # print "ar:", result, '\n', 'Sum', color.RED + str(sum(result)) + color.END
 
     sys.exit(0)
