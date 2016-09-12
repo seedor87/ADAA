@@ -92,11 +92,13 @@ def Div_And_Conq(L):
             # else:
             #     return C_low, C_high, C_sum
 
+    if len(L) < 2:
+        return L
     low,high,i = Find_Max_Sub_Array(L, 0, len(L)-1)
     return L[low:high+1]
 
 @timer
-def Kadanes_Method(L):
+def Linear_Method(L):
     best_so_far = cur_best = curi = starti = besti = 0
     for i in range(0, len(L)):
         if cur_best + L[i] > 0:
@@ -109,7 +111,7 @@ def Kadanes_Method(L):
     return L[starti:besti]
 
 @timer
-def main(lim, method=Kadanes_Method):
+def main(lim, method=Linear_Method):
 
     total_time = 0
     for i in range(0, lim):
@@ -124,9 +126,10 @@ if __name__ == '__main__':
     results = []
     results.append(main(50, method=Brute_Force)[1])
     results.append(main(50, method=Div_And_Conq)[1])
-    results.append(main(50, method=Kadanes_Method)[1])
+    results.append(main(50, method=Linear_Method)[1])
 
     print results
+
     # input = list_rand_int(Lim=10, Len=50, Sign=-1)
     # print input
     #
