@@ -8,6 +8,9 @@ from functools import wraps
 # my_round = lambda L, D: [round(i, D) for i in L ]
 # ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4]) # toy for interpretation
 
+"""
+The following are tools used to emphasize the provided results in console prints
+"""
 list_rand_int = lambda Lim, Len, Sign=0: [randint(Sign*Lim,Lim) for x in range(0,Len)]
 list_rand_float = lambda Lim, Len, Sign=0: [uniform(Sign*Lim,Lim) for x in range(0,Len)]
 
@@ -16,6 +19,12 @@ def wrap_text(text, highlight=None):
         return str(text)
     else:
         return '%s%s%s' %(highlight, text, color.END)
+
+def stringify(list):
+    ret = '\n'
+    for res in list:
+        ret += "\t%s \tarray size %s:  \t%s sec\n" %(res[1], res[2], res[0])
+    return ret
 
 class color:
    PURPLE = '\033[95m'
@@ -41,15 +50,19 @@ def timer(function):
         return result, diff
     return func_timer
 
+"""
+The following are the three methods used to solve for the max sub-array, using first brute force, then divide and conquer, and finally a linear solution.
+"""
 @timer
 def Brute_Force(L):
+    """
+    answer to question 3: the brute force method for finding max sub array
+    """
     res = []
     for i in range(0,len(L)+1):
         for j in range(i, len(L)+1):
             if sum(L[i:j]) > sum(res):
                 res = L[i:j]
-    if sum(L) > sum(res):
-        return L
     return res
 
 @timer
@@ -92,23 +105,27 @@ def Div_And_Conq(L):
             # else:
             #     return C_low, C_high, C_sum
 
-    if len(L) < 2:
+    if len(L) < 2:  # check to make sure the array is of adequate size to be operated on
         return L
-    low,high,i = Find_Max_Sub_Array(L, 0, len(L)-1)
+    low, high, i = Find_Max_Sub_Array(L, 0, len(L)-1)
     return L[low:high+1]
 
 @timer
 def Linear_Method(L):
-    best_so_far = cur_best = curi = starti = besti = 0
+    """
+    This is the solution to the final question of the homework, question 5.
+    The linear time solution to the max sub-array problem
+    """
+    best_so_far = cur_best = cur_index = start_index = best_index = 0
     for i in range(0, len(L)):
         if cur_best + L[i] > 0:
             cur_best += L[i]
         else:
-            cur_best, curi = 0, i+1
+            cur_best, cur_index = 0, i+1
 
         if cur_best > best_so_far:
-            starti, besti, best_so_far = curi, i+1, cur_best
-    return L[starti:besti]
+            start_index, best_index, best_so_far = cur_index, i+1, cur_best
+    return L[start_index:best_index]
 
 @timer
 def main(lim, method=Linear_Method):
@@ -123,23 +140,19 @@ def main(lim, method=Linear_Method):
 
 if __name__ == '__main__':
 
+    lim_step= 20
     results = []
-    results.append(main(50, method=Brute_Force)[1])
-    results.append(main(50, method=Div_And_Conq)[1])
-    results.append(main(50, method=Linear_Method)[1])
+    for i in [x * lim_step for x in range(1,11)]:
+        results.append((main(lim=i, method=Brute_Force)[1], Brute_Force.__name__, i))
+        results.append((main(lim=i, method=Div_And_Conq)[1], Div_And_Conq.__name__, i))
+        results.append((main(lim=i, method=Linear_Method)[1], Linear_Method.__name__, i))
 
-    print results
+    print wrap_text("Total Run-times: %s" % (stringify(results)), color.GREEN)
 
-    # input = list_rand_int(Lim=10, Len=50, Sign=-1)
+    """test to show independent usage"""
+    # input = list_rand_int(Lim=10, Len=50, Sign=0)
+    # result, run_time = Brute_Force(input)
     # print input
-    #
-    # result = Brute_Force(input)
-    # print "ar:", result, '\n', 'Sum', color.RED + str(sum(result)) + color.END
-    #
-    # result = Div_And_Conq(input)
-    # print "ar:", result, '\n', 'Sum', color.RED + str(sum(result)) + color.END
-    #
-    # result = Kadanes_Method(input)
-    # print "ar:", result, '\n', 'Sum', color.RED + str(sum(result)) + color.END
+    # print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
 
     sys.exit(0)
