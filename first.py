@@ -121,7 +121,7 @@ def Linear_Method(L):
     This is the solution to the final question of the homework, question 5.
     The linear time solution to the max sub-array problem
     """
-    best_so_far = cur_best = finalStart = start_index = best_index = 0
+    best_so_far = cur_best = finalStart = finalEnd= start_index = best_index = 0
     for i in range(0, len(L)):
         if cur_best + L[i] > 0:
             cur_best += L[i]
@@ -135,18 +135,15 @@ def Linear_Method(L):
 @timer
 def main(lim, method=Linear_Method):
 
-    total_time = 0
-    for i in range(0, lim):
-        input = list_rand_int(Lim=10, Len=i, Sign=-1)
-        # input = [-5, 100, -500, -10, 50, -60, 800]
-        result, run_time = method(input)
-        total_time += run_time
-        print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
-    return total_time
+    input = list_rand_int(Lim=10, Len=lim, Sign=-1)
+    # input = [-5, 100, -500, -10, 50, -60, 800] # Sample Input
+    result, run_time = method(input)
+    print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
+    return run_time
 
 if __name__ == '__main__':
 
-    lim_step= 20
+    lim_step= 100
     results = []
     for i in [x * lim_step for x in range(1,11)]:
         results.append((main(lim=i, method=Brute_Force)[1], Brute_Force.__name__, i))
@@ -156,9 +153,28 @@ if __name__ == '__main__':
     print wrap_text("Total Run-times: %s" % (stringify(results)), color.GREEN)
 
     """test to show independent usage"""
+    """Note the usage;
+            Len=50 -> input array of length 50
+            Lim=10 -> input array will be of integers between -10 and 10
+    """
     # input = list_rand_int(Lim=10, Len=50, Sign=0)
-    # result, run_time = Brute_Force(input)
     # print input
+    #
+    # result, run_time = Brute_Force(input)
+    # print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
+    # result, run_time = Div_And_Conq(input)
+    # print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
+    # result, run_time = Linear_Method(input)
+    # print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
+
+    """Tests on input = []"""
+    # input = []
+    #
+    # result, run_time = Brute_Force(input)
+    # print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
+    # result, run_time = Div_And_Conq(input)
+    # print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
+    # result, run_time = Linear_Method(input)
     # print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
 
     sys.exit(0)
