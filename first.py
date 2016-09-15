@@ -138,7 +138,7 @@ def main(lim, method=Linear_Method):
     total_time = 0
     for i in range(0, lim):
         input = list_rand_int(Lim=10, Len=i, Sign=-1)
-        input = [-5, 100, -500, -10, 50, -60, 800]
+        # input = [-5, 100, -500, -10, 50, -60, 800]
         result, run_time = method(input)
         total_time += run_time
         print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
