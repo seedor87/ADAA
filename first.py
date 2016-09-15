@@ -88,16 +88,21 @@ def Div_And_Conq(L):
         else:
             mid = (low+high) // 2
 
-            L_low, L_high, L_sum = Find_Max_Sub_Array(L, low, mid)
-            R_low, R_high, R_sum = Find_Max_Sub_Array(L, mid+1, high)
-            C_low, C_high, C_sum = Find_Max_Crossing_Sub_Array(L, low, mid, high)
 
             """this is slightly slower than the triple check if's"""
-            lst = [L_low, L_high, L_sum, R_low, R_high, R_sum, C_low, C_high, C_sum]
+            lst = []
+            lst.extend(Find_Max_Sub_Array(L, low, mid))
+            lst.extend(Find_Max_Sub_Array(L, mid+1, high))
+            lst.extend(Find_Max_Crossing_Sub_Array(L, low, mid, high))
+
             index_of_result = lst.index(max(lst[2], lst[5], lst[8]))
             return lst[index_of_result-2], lst[index_of_result-1], lst[index_of_result]
 
             """this is slightly faster than the aforementioned"""
+            # L_low, L_high, L_sum = Find_Max_Sub_Array(L, low, mid)
+            # R_low, R_high, R_sum = Find_Max_Sub_Array(L, mid+1, high)
+            # C_low, C_high, C_sum = Find_Max_Crossing_Sub_Array(L, low, mid, high)
+
             # if L_sum >= R_sum and L_sum >= C_sum:
             #     return L_low, L_high, L_sum
             # elif R_sum >= L_sum and R_sum >= C_sum:
@@ -116,16 +121,16 @@ def Linear_Method(L):
     This is the solution to the final question of the homework, question 5.
     The linear time solution to the max sub-array problem
     """
-    best_so_far = cur_best = cur_index = start_index = best_index = 0
+    best_so_far = cur_best = finalStart = start_index = best_index = 0
     for i in range(0, len(L)):
         if cur_best + L[i] > 0:
             cur_best += L[i]
         else:
-            cur_best, cur_index = 0, i+1
+            cur_best, finalStart = 0, i+1
 
         if cur_best > best_so_far:
-            start_index, best_index, best_so_far = cur_index, i+1, cur_best
-    return L[start_index:best_index]
+            start_index, finalEnd, best_so_far = finalStart, i+1, cur_best
+    return L[start_index:finalEnd]
 
 @timer
 def main(lim, method=Linear_Method):
@@ -133,6 +138,7 @@ def main(lim, method=Linear_Method):
     total_time = 0
     for i in range(0, lim):
         input = list_rand_int(Lim=10, Len=i, Sign=-1)
+        input = [-5, 100, -500, -10, 50, -60, 800]
         result, run_time = method(input)
         total_time += run_time
         print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
