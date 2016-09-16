@@ -4,6 +4,7 @@ from __future__ import division
 import sys, timeit
 from random import randint, uniform
 from functools import wraps
+import sys
 
 # my_round = lambda L, D: [round(i, D) for i in L ]
 # ordinal = lambda n: "%d%s" % (n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4]) # toy for interpretation
@@ -143,7 +144,7 @@ def main(lim, method=Linear_Method):
 
 if __name__ == '__main__':
 
-    lim_step= 5
+    lim_step= 10
     results = []
     test_array_sizes = [x * lim_step for x in range(1,11)]
     for i in test_array_sizes:
@@ -155,14 +156,18 @@ if __name__ == '__main__':
 
 
     """Code to display plot for visual evaluation of runtime values"""
-    import matplotlib.pyplot as plt
-    
-    runtime_results = [x[0] for x in results]
+    try:
+        import matplotlib.pyplot as plt
 
-    plt.plot(test_array_sizes, runtime_results[0::3], ".r-")
-    plt.plot(test_array_sizes, runtime_results[1::3], ".y-")
-    plt.plot(test_array_sizes, runtime_results[2::3], ".g-")
-    plt.show()
+        runtime_results = [x[0] for x in results]
+
+        plt.plot(test_array_sizes, runtime_results[0::3], ".r-")
+        plt.plot(test_array_sizes, runtime_results[1::3], ".y-")
+        plt.plot(test_array_sizes, runtime_results[2::3], ".g-")
+        plt.show()
+    except Exception as e:
+        sys.stderr.write('Check Dependencies\n')
+        sys.stderr.write(str(e)+ '\n')
 
 
     """test to show independent usage"""
