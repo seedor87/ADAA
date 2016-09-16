@@ -143,14 +143,27 @@ def main(lim, method=Linear_Method):
 
 if __name__ == '__main__':
 
-    lim_step= 100
+    lim_step= 5
     results = []
-    for i in [x * lim_step for x in range(1,11)]:
+    test_array_sizes = [x * lim_step for x in range(1,11)]
+    for i in test_array_sizes:
         results.append((main(lim=i, method=Brute_Force)[1], Brute_Force.__name__, i))
         results.append((main(lim=i, method=Div_And_Conq)[1], Div_And_Conq.__name__, i))
         results.append((main(lim=i, method=Linear_Method)[1], Linear_Method.__name__, i))
 
     print wrap_text("Total Run-times: %s" % (stringify(results)), color.GREEN)
+
+
+    """Code to display plot for visual evaluation of runtime values"""
+    import matplotlib.pyplot as plt
+    
+    runtime_results = [x[0] for x in results]
+
+    plt.plot(test_array_sizes, runtime_results[0::3], ".r-")
+    plt.plot(test_array_sizes, runtime_results[1::3], ".y-")
+    plt.plot(test_array_sizes, runtime_results[2::3], ".g-")
+    plt.show()
+
 
     """test to show independent usage"""
     """Note the usage;
