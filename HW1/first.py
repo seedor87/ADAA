@@ -121,7 +121,7 @@ def Linear_Method(L):
     This is the solution to the final question of the homework, question 5.
     The linear time solution to the max sub-array problem
     """
-    best_so_far = cur_best = finalStart = finalEnd= start_index = best_index = 0
+    best_so_far = cur_best = finalStart = finalEnd= start_index = 0
     for i in range(0, len(L)):
         if cur_best + L[i] > 0:
             cur_best += L[i]
