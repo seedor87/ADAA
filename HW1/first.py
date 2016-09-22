@@ -124,13 +124,15 @@ def Linear_Method(L):
     """
     best_so_far = cur_best = finalStart = finalEnd= start_index = 0
     for i in range(0, len(L)):
+        cur_best += L[i]
+        if cur_best > best_so_far:
+            start_index, finalEnd, best_so_far = finalStart, i + 1, cur_best
         if cur_best + L[i] > 0:
-            cur_best += L[i]
+
         else:
             cur_best, finalStart = 0, i+1
 
-        if cur_best > best_so_far:
-            start_index, finalEnd, best_so_far = finalStart, i+1, cur_best
+
     return L[start_index:finalEnd]
 
 @timer
