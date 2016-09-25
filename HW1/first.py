@@ -89,7 +89,6 @@ def Div_And_Conq(L):
         else:
             mid = (low+high) // 2
 
-
             """this is slightly slower than the triple check if's"""
             lst = []
             lst.extend(Find_Max_Sub_Array(L, low, mid))
@@ -124,16 +123,21 @@ def Linear_Method(L):
     """
     best_so_far = cur_best = finalStart = finalEnd= start_index = 0
     for i in range(0, len(L)):
-        cur_best += L[i]
-        if cur_best > best_so_far:
-            start_index, finalEnd, best_so_far = finalStart, i + 1, cur_best
         if cur_best + L[i] > 0:
-
+            cur_best += L[i]
         else:
             cur_best, finalStart = 0, i+1
-
-
+        if cur_best > best_so_far:
+            start_index, finalEnd, best_so_far = finalStart, i + 1, cur_best
     return L[start_index:finalEnd]
+
+@timer
+def max_subarray(A):
+    max_ending_here = max_so_far = A[0]
+    for x in A[1:]:
+        max_ending_here = max(x, max_ending_here + x)
+        max_so_far = max(max_so_far, max_ending_here)
+    return max_so_far
 
 @timer
 def main(lim, method=Linear_Method):
@@ -196,5 +200,37 @@ if __name__ == '__main__':
     # print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
     # result, run_time = Linear_Method(input)
     # print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED)
+
+    """Test on uniform input to reflected accurately measure runtime"""
+    """NOTE: input is same across all runs"""
+    input = [-9, 9, 2, 5, -8, 8, 2, -6, -10, 5, 2, -6, -9, 1, 2, 10, -5, 9, 9, 3, -7, 8, 1, 6, -3, -9, -7, 7, 7, 7, 10, 10, 0, 6, -2, -6, 4, 5, -4, 5, -5, 1, 9, -4, -10, 8, -3, -1, 1, 8, 10, 10, 6, 10, 5, 10, 5, -10, -9, -8, -9, 10, -2, 5, 9, 0, -5, 6, 10, -9, 9, -7, 0, -1, -6, 10, -8, 4, -3, -5, 6, 2, -10, 5, 7, 0, -6, -2, -10, 2, -1, 8, 2, 1, 8, -7, 7, -8, 8, -6]
+    print "input:", input
+
+    runtime_results = []
+    for i in range(0, 5):
+        result, run_time = Brute_Force(input)
+        runtime_results.append(run_time)
+        print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED), "runtime:", run_time
+        result, run_time = Div_And_Conq(input)
+        runtime_results.append(run_time)
+        print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED), "runtime:", run_time
+        result, run_time = Linear_Method(input)
+        runtime_results.append(run_time)
+        print "ar:", result, '\n', 'Sum', wrap_text(sum(result), color.RED), "runtime:", run_time
+
+    try:
+        import matplotlib.pyplot as plt
+        test_array_sizes = [1,2,3,4,5]
+
+        plt.plot(test_array_sizes, runtime_results[0::3], ".r-")
+        plt.plot(test_array_sizes, runtime_results[1::3], ".y-")
+        plt.plot(test_array_sizes, runtime_results[2::3], ".g-")
+        plt.show()
+    except Exception as e:
+        sys.stderr.write('Check Dependencies\n')
+        sys.stderr.write(str(e)+ '\n')
+
+    input = [-1,-2,-3]
+    print Linear_Method(input)
 
     sys.exit(0)
