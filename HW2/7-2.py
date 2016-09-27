@@ -1,24 +1,24 @@
-i = 0
-j = 0
+
 
 def exchange(List, a, b):
     temp = List[a]
     List[a] = List[b]
     List[b] = temp
 
-def dual_pivot_qs(List, start, top):
-    if start < top:
-        h, l, = dual_pivot_partition(List, start, top)
-        dual_pivot_qs(List, start, h - 1)
-        dual_pivot_qs(List, h + 1, l - 1)
-        dual_pivot_qs(List, l + 1, top)
+def dual_pivot_qs(List):
+    return _dual_pivot_qs(List, 0, len(List)-1)
+
+def _dual_pivot_qs(List, p, r):
+    if p < r:
+        h, l, = dual_pivot_partition(List, p, r)
+        _dual_pivot_qs(List, p, h - 1)
+        _dual_pivot_qs(List, h + 1, l - 1)
+        _dual_pivot_qs(List, l + 1, r)
     return List
 
-def dual_pivot_partition(List, start, top):
+def dual_pivot_partition(List, p, r):
 
-    p = start
-    q = top
-    k = p+1
+    p, q, k  = p, r, p+1
     h = k
     l = q-1
 
@@ -52,6 +52,12 @@ def dual_pivot_partition(List, start, top):
 
 input = [-40, 50, 0, 10, 20, -25, 5]
 
-dual_pivot_qs(input, 0 , len(input)-1)
+res = dual_pivot_qs(input)
 
-print input
+print res
+
+input = [-428, -106, 10, 98, -319, -290, 277, -46, -290, -389, -420, 460, -434, -137, 13, -39, 374, -428, 128, 246, -136, 279, -215, -236, -424, -323, -221, -482, -332, -206, -496, 198, 310, 443, -107, 284, 102, 122, -243, 415, -303, 376, 435, -92, -139, -93, 353, -133, -243, -36, 215, -283, 51, -496, -388, -112, -141, 270, -453, 483, 193, -443, -160, -313, 18, -218, -400, 370, 323, 295, -469, 80, -270, -90, -95, 216, -63, -168, -498, -48, -8, 290, 167, 275, -408, 463, -455, 52, 247, 163, -401, 112, -485, -33, -339, -442, -115, 269, 137, -386]
+
+res = dual_pivot_qs(input)
+
+print res
