@@ -51,7 +51,7 @@ input = [3, 5, 7, 9, 11]
 print "\nInput: %s\nEnter a choice of ith smallest number, or q to quit--\n" % (input)
 while True:
     try:
-        n = raw_input(">>" % (input))
+        n = raw_input(">> " % (input))
         if n == "q":
             print "exiting"
             break
