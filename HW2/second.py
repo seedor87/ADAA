@@ -132,7 +132,7 @@ def _dual_pivot_qs(List, p, r):
     return List
 
 def dual_pivot_partition(List, p, r):
-    q, k  = r, p + 1
+    q, k = r, p + 1
     h = k
     l = q - 1
 
