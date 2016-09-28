@@ -4,6 +4,7 @@ import sys, timeit
 from random import randint, uniform
 import random
 from functools import wraps
+import math
 
 def timer(function):
 
@@ -13,8 +14,26 @@ def timer(function):
         result = function(*args, **kwargs)
         t1 = timeit.default_timer()
         diff = t1 -t0
-        return result, diff
+        return result, function.func_name, diff
     return func_timer
+
+def exchange(List, a, b):
+    temp = List[a]
+    List[a] = List[b]
+    List[b] = temp
+
+@timer
+def qsort_selection(List, i):
+    return _qsort(List)[i-1]
+
+def _qsort(List):
+    if List == []:
+        return []
+    else:
+        pivot = List[0]
+        lesser = _qsort([x for x in List[1:] if x < pivot])
+        greater = _qsort([x for x in List[1:] if x >= pivot])
+        return lesser + [pivot] + greater
 
 @timer
 def partition_selection(List, i, p=None, r=None):
@@ -32,11 +51,6 @@ def _partition_selection(List, p, r, i):
     else:
         return _partition_selection(List, q+1, r, i-k)
 
-def exchange(List, a, b):
-    temp = List[a]
-    List[a] = List[b]
-    List[b] = temp
-
 def partition(List, p, r):
     x = List[r]
     for j in range(p, r):
@@ -46,20 +60,30 @@ def partition(List, p, r):
     exchange(List, p, r)
     return p
 
+lim = 1000
+primes = [1,2]
+for num in range(3,lim,2):
+    if all(num%i!=0 for i in range(2,int(math.sqrt(num))+1)):
+       primes.append(num)
 
-input = [3, 5, 7, 9, 11]
-print "\nInput: %s\nEnter a choice of ith smallest number, or q to quit--\n" % (input)
-while True:
-    try:
-        n = raw_input(">> " % (input))
-        if n == "q":
-            print "exiting"
-            break
-        else:
-            loc = int(n) -2
-            if loc < -1 or int(n) > len(input):
-                print '!!! Invalid index !!!'
+def main():
+    input = primes
+    print "\nInput: %s\nEnter a choice of ith smallest number, or q to quit--\n" % (input)
+    while True:
+        try:
+            n = raw_input(">> " % (input))
+            if n == "q":
+                print "exiting"
+                break
             else:
-                print 'Value: %s\tRuntime: %s' % (partition_selection(input, loc))
-    except Exception as e:
-        pass
+                loc = int(n) -2
+                if loc < -1 or int(n) > len(input):
+                    print '!!! Invalid index !!!'
+                else:
+                    print 'Value: %s\tRuntime: %s, %s' % (partition_selection(input, loc))
+                    print 'Value: %s\tRuntime: %s, %s' % (qsort_selection(input, int(n)))
+        except Exception as e:
+            pass
+
+main()
+sys.exit(0)
