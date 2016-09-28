@@ -3,10 +3,6 @@ from __future__ import division
 import sys, timeit
 from random import randint, uniform
 from functools import wraps
-import sys
-
-list_rand_int = lambda Lim, Len, Sign=0: [randint(Sign*Lim,Lim) for x in range(0,Len)]
-list_rand_float = lambda Lim, Len, Sign=0: [uniform(Sign*Lim,Lim) for x in range(0,Len)]
 
 def timer(function):
 
