@@ -125,7 +125,8 @@ def dual_pivot_qs(List):
 
 def _dual_pivot_qs(List, p, r):
     if p < r:
-        h, l, = dual_pivot_partition(List, p, r)
+        h, l, = Partition(List, p, r)
+        # h, l, = dual_pivot_partition(List, p, r)
         _dual_pivot_qs(List, p, h - 1)
         _dual_pivot_qs(List, h + 1, l - 1)
         _dual_pivot_qs(List, l + 1, r)
@@ -154,6 +155,26 @@ def dual_pivot_partition(List, p, r):
     exchange(List, q, l)
 
     return h, l
+
+def Partition(array, start, end):
+    copy = array[:]
+
+    #print 'p', start, end
+
+    x = array[end]
+    i = start-1 # The end of the less than region.
+    t = start-1
+    for j in range(start, end):
+        if array[j] == x:
+            t+=1
+            array[t], array[j] = array[j], array[t]
+        if array[j] < x:
+            i+=1
+            t+=1
+            array[i], array[j] = array[j], array[i]
+    array[t+1], array[end] = array[end], array[t+1]
+    # print copy, start, i+1, t+1, end, array
+    return i+1, t
 
 text = """Small Fixed Input fro Debugging""" + "-" * 1000
 print text
