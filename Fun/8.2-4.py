@@ -12,10 +12,6 @@ def prob8point2dash4(array, k, a, b):
     for i in array:
         count[i] += 1
 
-    result = []
-    for j in range(0, k + 1):
-        result += [j] * count[j]
-
     return sum(count[a:b+1]), count[a:b+1]
 
 print prob8point2dash4(array, k, a, b)
