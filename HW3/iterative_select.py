@@ -22,19 +22,19 @@ def random_partition(List, p, r) :
 
 def randomized_select(List, i):
     try:
-        begin = 0
+        start = 0
         end = len(List)-1
-        while begin < end:
-            q = random_partition(List, begin, end)
-            k = q - begin + 1
+        while start < end:
+            q = random_partition(List, start, end)
+            k = q - start + 1
             if i == k:
                 return List[q]
             elif i < k:
-                end = q -1
+                end = q - 1
             else:
-                begin = q+1
-                i = i -k
-        return List[begin]
+                start = q + 1
+                i = i - k
+        return List[start]
     except Exception as e:
         return e
 

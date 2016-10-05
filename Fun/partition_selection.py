@@ -1,10 +1,9 @@
 
 from __future__ import division
 import sys, timeit
-from random import randint, uniform
-import random
+from random import randint
 from functools import wraps
-import math
+import random
 
 def timer(function):
 
@@ -63,7 +62,8 @@ def _partition_selection(List, p, r, i):
         return _partition_selection(List, q+1, r, i-k)
 
 def partition(List, p, r):
-    x = List[r]
+    idx = random.randint(p, r)
+    x = List[idx]
     for j in range(p, r):
         if List[j] <= x:
             exchange(List, j, p)
