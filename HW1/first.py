@@ -121,7 +121,8 @@ def Linear_Method(L):
     This is the solution to the final question of the homework, question 5.
     The linear time solution to the max sub-array problem
     """
-    best_so_far = cur_best = finalStart = finalEnd= start_index = 0
+    best_so_far = L[0]
+    cur_best = finalStart = finalEnd= start_index = 0
     for i in range(0, len(L)):
         if cur_best + L[i] > 0:
             cur_best += L[i]
@@ -134,10 +135,17 @@ def Linear_Method(L):
 @timer
 def max_subarray(A):
     max_ending_here = max_so_far = A[0]
+    cur_index = start_index = 0
     for x in A[1:]:
-        max_ending_here = max(x, max_ending_here + x)
+        if max_ending_here + x > x:
+            max_ending_here = max_ending_here + x
+            start_index = cur_index
+        else:
+            max_ending_here = x
+            start_index = cur_index
         max_so_far = max(max_so_far, max_ending_here)
-    return max_so_far
+        cur_index += 1
+    return max_so_far, start_index
 
 @timer
 def main(lim, method=Linear_Method):
@@ -230,7 +238,7 @@ if __name__ == '__main__':
         sys.stderr.write('Check Dependencies\n')
         sys.stderr.write(str(e)+ '\n')
 
-    input = [-1,-2,-3]
-    print Linear_Method(input)
+    input = [-2,-3,-1]
+    print max_subarray(input)
 
     sys.exit(0)
