@@ -19,7 +19,7 @@ def wrap_text(text, highlight=None):
     if highlight is None:
         return str(text)
     else:
-        return '%s%s%s' %(highlight, text, color.END)
+        return '%s%s%s' % (highlight, text, color.END)
 
 def timer(function):
 
@@ -46,24 +46,45 @@ def _naive_cut_rod(p, n):
     return q
 
 @timer
-def better_cut_rod(p, n):
-    val = [0 for _ in range(n+1)]
-    val[0] = 0
+def memoized_cut_rod(p, n):
+    memoize = {1:p[0]}
+    return _memoized_cut_rod(p, n, memoize)
 
+def _memoized_cut_rod(p, n, memoize):
+    max_val = 0
     for i in range(1, n+1):
+        if memoize.get(n-1) is not None:
+            cur_max = memoize.get(n-1)
+        else:
+            cur_max, memoize = _memoized_cut_rod(p, n-1, memoize)
+        max_val = max(max_val, p[i-1] + cur_max)
+    memoize[n] = max_val
+    return max_val, memoize
+
+@timer
+def bottom_up_cut_rod(p, n):
+    r = s = [0] * (n+1)
+    r[0] = 0
+
+    for i in range(1, n + 1):
         max_val = -maxint
         for j in range(i):
-             max_val = max(max_val, p[j] + val[i - j - 1])
-        val[i] = max_val
+            if max_val < p[j] + r[i-j-1]:
+                max_val = p[j] + r[i-j-1]
+                s[i] = j
+        r[i] = max_val
 
-    return val[n]
+    temp = n
+    ret = []
+    while temp > 0:
+        ret.append(s[temp])
+        temp = temp - s[temp]
+    return r[n], ret
 
-
-stopping_pt = 13
-p = [1,2,3,5,7,9,13,15,16,18,25,30,35]
-for i in range(1, stopping_pt):
-    print naive_cut_rod(p, i)
-
-print """Break""" + '-' * 100
-for i in range(1, stopping_pt):
-    print better_cut_rod(p, i)
+p = [1,2,3,5,7,9,13,15,16,18,25,30,35,50,60,80,120,150,190,210,220,225,230,230,215,215,210]
+for i in range(1, len(p)):
+    print 'n = %s' % (wrap_text(str(i), color.RED))
+    print '\tsolution: %s, runtime: %s' % tuple([wrap_text(text, color.GREEN) for text in naive_cut_rod(p, i)])
+    print '\tsolution: %s, runtime: %s' % tuple([wrap_text(text, color.GREEN) for text in memoized_cut_rod(p, i)])
+    print '\tsolution: %s, runtime: %s' % tuple([wrap_text(text, color.GREEN) for text in bottom_up_cut_rod(p, i)])
+    print '-' * 100
