@@ -1,4 +1,3 @@
-
 from __future__ import division
 import sys, timeit
 from random import randint
@@ -62,12 +61,12 @@ def _partition_selection(List, p, r, i):
         return _partition_selection(List, q+1, r, i-k)
 
 def partition(List, p, r):
-    idx = random.randint(p, r)
-    x = List[idx]
+    x = p + random.randint(r - p + 1)
+    exchange(List, x, r)
     for j in range(p, r):
-        if List[j] <= x:
+        if List[j] <= List[r]:
             exchange(List, j, p)
-            p +=1
+            p += 1
     exchange(List, p, r)
     return p
 

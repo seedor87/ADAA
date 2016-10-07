@@ -2,7 +2,6 @@ from functools import wraps
 from sys import maxint
 import sys, timeit
 
-
 class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'
@@ -35,19 +34,30 @@ def timer(function):
 
 @timer
 def naive_cut_rod(p, n):
-    return _naive_cut_rod(p,n)
 
-def _naive_cut_rod(p, n):
-    if n == 0:
-        return 0
-    q = -maxint
-    for i in range(0, n+1):
-        q = max(q, p[i] + _naive_cut_rod(p, n-i-1))
-    return q
+    def _naive_cut_rod(p, n):
+        if n == 0:
+            return 0
+        q = -maxint
+        for i in range(0, n+1):
+            q = max(q, p[i] + _naive_cut_rod(p, n-i-1))
+        return q
 
+    return _naive_cut_rod(p, n)
 
 @timer
 def memoized_cut_rod(p, n):
+
+    def _memoized_cut_rod(p, n, r):
+        if r[n] > 0:
+            return r[n], None
+        q = 0
+        if not n == 0:
+            for i in range(0, n):
+                q = max(q, p[i] + _memoized_cut_rod(p, n - i - 1, r)[0])
+        r[n] = q
+        return q, r
+
     r = [0] * (n+1)
     result, r = _memoized_cut_rod(p, n, r)
     temp = n
@@ -56,17 +66,6 @@ def memoized_cut_rod(p, n):
         ret.append(r[temp])
         temp = temp - r[temp]
     return result, ret
-
-def _memoized_cut_rod(p, n, r):
-    if r[n] > 0:
-        return r[n], None
-    q = 0
-    if not n == 0:
-        for i in range(0, n):
-            q = max(q, p[i]+_memoized_cut_rod(p,n-i-1,r)[0])
-    r[n] = q
-
-    return q, r
 
 @timer
 def bottom_up_cut_rod(p, n):

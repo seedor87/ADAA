@@ -29,7 +29,7 @@ def radixsort(List):
 
 def main():
 
-    input = [18,5,100,3,1,19,6,0,7,4,2]
+    input = [18,5,100,3,1,19,6,0,7,4,2,1000,1000000000]
     res = radixsort(input)
     print res
 
