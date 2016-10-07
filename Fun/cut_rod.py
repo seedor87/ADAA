@@ -45,21 +45,28 @@ def _naive_cut_rod(p, n):
         q = max(q, p[i] + _naive_cut_rod(p, n-i-1))
     return q
 
+
 @timer
 def memoized_cut_rod(p, n):
-    memoize = {1:p[0]}
-    return _memoized_cut_rod(p, n, memoize)
+    r = [0] * (n+1)
+    result, r = _memoized_cut_rod(p, n, r)
+    temp = n
+    ret = []
+    while temp > 0:
+        ret.append(r[temp])
+        temp = temp - r[temp]
+    return result, ret
 
-def _memoized_cut_rod(p, n, memoize):
-    max_val = 0
-    for i in range(1, n+1):
-        if memoize.get(n-1) is not None:
-            cur_max = memoize.get(n-1)
-        else:
-            cur_max, memoize = _memoized_cut_rod(p, n-1, memoize)
-        max_val = max(max_val, p[i-1] + cur_max)
-    memoize[n] = max_val
-    return max_val, memoize
+def _memoized_cut_rod(p, n, r):
+    if r[n] > 0:
+        return r[n], None
+    q = 0
+    if not n == 0:
+        for i in range(0, n):
+            q = max(q, p[i]+_memoized_cut_rod(p,n-i-1,r)[0])
+    r[n] = q
+
+    return q, r
 
 @timer
 def bottom_up_cut_rod(p, n):
@@ -82,7 +89,7 @@ def bottom_up_cut_rod(p, n):
     return r[n], ret
 
 p = [1,2,3,5,7,9,13,15,16,18,25,30,35,50,60,80,120,150,190,210,220,225,230,230,215,215,210]
-for i in range(1, len(p)):
+for i in range(0, len(p)):
     print 'n = %s' % (wrap_text(str(i), color.RED))
     print '\tsolution: %s, runtime: %s' % tuple([wrap_text(text, color.GREEN) for text in naive_cut_rod(p, i)])
     print '\tsolution: %s, runtime: %s' % tuple([wrap_text(text, color.GREEN) for text in memoized_cut_rod(p, i)])
