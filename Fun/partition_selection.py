@@ -52,7 +52,7 @@ def _partition_selection(List, p, r, i):
     if p == r:
         return List[p]
     q = partition(List, p, r)
-    k = q-p-1
+    k = q-p+1
     if i == k:
         return List[q]
     elif i < k:
@@ -61,7 +61,7 @@ def _partition_selection(List, p, r, i):
         return _partition_selection(List, q+1, r, i-k)
 
 def partition(List, p, r):
-    x = p + random.randint(r - p + 1)
+    x = p + random.randrange(r - p + 1)
     exchange(List, x, r)
     for j in range(p, r):
         if List[j] <= List[r]:
@@ -83,12 +83,8 @@ def main():
                 print "exiting"
                 break
             else:
-                loc = int(n) -2
-                if loc < -1 or int(n) > len(input):
-                    print '!!! Invalid index !!!'
-                else:
-                    print 'Value: %s\tRuntime: %s, %s' % (partition_selection(input, loc))
-                    print 'Value: %s\tRuntime: %s, %s' % (qsort_selection(input, int(n)))
+                print 'Value: %s\tRuntime: %s, %s' % (partition_selection(input, int(n)))
+                print 'Value: %s\tRuntime: %s, %s' % (qsort_selection(input, int(n)))
         except Exception as e:
             pass
 
