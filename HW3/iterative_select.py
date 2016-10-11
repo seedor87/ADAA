@@ -116,6 +116,11 @@ for i in range(1, len(array)+1):
     print "%s:\t"% ordinal(i), pt2[0]
     plt.scatter(i, pt2[1], color='red')
 
+for i in range(1, len(array)+1):
+    pt3 = partition_selection(array, i)
+    print "%s:\t"% ordinal(i), pt3[0]
+    plt.scatter(i, pt3[1], color='blue')
+
 plt.show()
 
 
@@ -131,6 +136,11 @@ for i in range(1, len(array)+1):
     print "%s:\t"% ordinal(i), pt2[0]
     plt.scatter(i, pt2[1], color='red')
 
+for i in range(1, len(array)+1):
+    pt3 = partition_selection(array, i)
+    print "%s:\t"% ordinal(i), pt3[0]
+    plt.scatter(i, pt3[1], color='blue')
+
 plt.show()
 
 print """Test 3: randomly generated test input for timing, size 1000""" + '-' * 100
@@ -145,6 +155,11 @@ for i in range(1, len(array)+1):
     print "%s:\t"% ordinal(i), pt2[0]
     plt.scatter(i, pt2[1], color='red')
 
+for i in range(1, len(array)+1):
+    pt3 = partition_selection(array, i)
+    print "%s:\t"% ordinal(i), pt3[0]
+    plt.scatter(i, pt3[1], color='blue')
+
 plt.show()
 
 print """Test 4: randomly generated test input for timing, size 1000""" + '-' * 100
@@ -158,6 +173,11 @@ for i in range(1, len(array)+1):
     pt2 = sort_then_select(array, i)
     print "%s:\t"% ordinal(i), pt2[0]
     plt.scatter(i, pt2[1], color='red')
+
+for i in range(1, len(array)+1):
+    pt3 = partition_selection(array, i)
+    print "%s:\t"% ordinal(i), pt3[0]
+    plt.scatter(i, pt3[1], color='blue')
 
 plt.show()
 
