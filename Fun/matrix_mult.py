@@ -82,14 +82,55 @@ def _lookup_chain(m, p, i, j):
                 m[i][j] = q
     return m[i][j]
 
-array = [2, 4, 6, 3, 4, 7]
-print recursive_matrix_chain(array)[0]
-print memoized_matrix_chain(array)[0]
+# test_set = [[2, 4, 6, 3, 4, 7],
+#             [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37],
+#             [56, 43, 57, 97, 99, 8, 1, 50, 79, 16, 89, 51, 20, 87, 11, 90]]
 
-array = [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
-print recursive_matrix_chain(array)[0]
-print memoized_matrix_chain(array)[0]
+# test_set = [list_rand_int(100, x, 0) for x in xrange(2,20)]
+test_set = [[1],
+           [37, 74],
+           [10, 65, 72],
+           [54, 100, 38, 84],
+           [58, 66, 6, 5, 24],
+           [69, 17, 35, 15, 73, 74],
+           [17, 66, 75, 20, 29, 50, 56],
+           [68, 36, 59, 9, 36, 96, 33, 9],
+           [48, 93, 17, 37, 52, 64, 58, 26, 99],
+           [60, 69, 9, 31, 65, 53, 12, 17, 69, 49],
+           [61, 42, 10, 49, 31, 16, 3, 12, 31, 38, 61],
+           [96, 14, 70, 61, 35, 17, 24, 8, 91, 46, 81, 78],
+           [97, 59, 35, 98, 25, 37, 77, 58, 8, 5, 78, 44, 35],
+           [38, 41, 78, 48, 50, 78, 34, 21, 70, 3, 79, 33, 15, 31],
+           [28, 85, 3, 47, 0, 13, 58, 16, 74, 86, 76, 64, 92, 97, 27],
+           [59, 25, 2, 11, 9, 92, 2, 50, 32, 86, 24, 37, 28, 74, 56, 48]] # approx 9 seconds
+           # [67, 42, 92, 58, 72, 61, 17, 12, 67, 58, 24, 45, 71, 21, 34, 14, 64],
+           # [15, 91, 42, 67, 24, 11, 81, 54, 42, 25, 55, 93, 87, 13, 34, 26, 43, 98],
+           # [53, 34, 3, 86, 61, 20, 2, 76, 12, 1, 29, 95, 93, 22, 56, 66, 44, 6, 14]]
+i = 1
+x = []
+y1 = []
+y2 = []
+for test in test_set:
+    a = recursive_matrix_chain(test)[1]
+    b = memoized_matrix_chain(test)[1]
+    plt.scatter(i, a, color='red')
+    plt.scatter(i, b, color='green')
+    i += 1
+    x.append(i)
+    y1.append(a)
+    y2.append(b)
 
-array = [56, 43, 57, 97, 99, 8, 1, 50, 79, 16, 89, 51, 20, 87, 11, 90]
-print recursive_matrix_chain(array)[0]
-print memoized_matrix_chain(array)[0]
+plt.plot(x, y1, color='red')
+plt.plot(x, y2, color='green')
+
+p1 = plt.Rectangle((0, 0), 0.1, 0.1, fc='red')
+p2 = plt.Rectangle((0, 0), 0.1, 0.1, fc='green')
+
+plt.xlabel('This is my x-axis')
+plt.ylabel('This is your y-axis')
+plt.title("This is our title")
+
+plt.legend((p1, p2), ('line1', 'line2'), loc='upper left')
+
+plt.grid()
+plt.show()
