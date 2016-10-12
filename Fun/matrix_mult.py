@@ -106,31 +106,56 @@ test_set = [[1],
            # [67, 42, 92, 58, 72, 61, 17, 12, 67, 58, 24, 45, 71, 21, 34, 14, 64],
            # [15, 91, 42, 67, 24, 11, 81, 54, 42, 25, 55, 93, 87, 13, 34, 26, 43, 98],
            # [53, 34, 3, 86, 61, 20, 2, 76, 12, 1, 29, 95, 93, 22, 56, 66, 44, 6, 14]]
-i = 1
-x = []
-y1 = []
-y2 = []
-for test in test_set:
-    a = recursive_matrix_chain(test)[1]
-    b = memoized_matrix_chain(test)[1]
-    plt.scatter(i, a, color='red')
-    plt.scatter(i, b, color='green')
-    i += 1
-    x.append(i)
-    y1.append(a)
-    y2.append(b)
 
-plt.plot(x, y1, color='red')
-plt.plot(x, y2, color='green')
+def scatter_style():
+    i = 1
+    for test in test_set:
+        a = recursive_matrix_chain(test)[1]
+        b = memoized_matrix_chain(test)[1]
+        plt.scatter(i, a, color='red')
+        plt.scatter(i, b, color='green')
+        i += 1
 
-p1 = plt.Rectangle((0, 0), 0.1, 0.1, fc='red')
-p2 = plt.Rectangle((0, 0), 0.1, 0.1, fc='green')
+    p1 = plt.Rectangle((0, 0), 0.1, 0.1, fc='red')
+    p2 = plt.Rectangle((0, 0), 0.1, 0.1, fc='green')
 
-plt.xlabel('This is my x-axis')
-plt.ylabel('This is your y-axis')
-plt.title("This is our title")
+    plt.xlabel('This is my x-axis')
+    plt.ylabel('This is your y-axis')
+    plt.title("This is our title")
 
-plt.legend((p1, p2), ('line1', 'line2'), loc='upper left')
+    plt.legend((p1, p2), ('line1', 'line2'), loc='upper left')
 
-plt.grid()
-plt.show()
+    plt.grid()
+    plt.show()
+
+def lines_style():
+    i = 1
+    x = []
+    y1 = []
+    y2 = []
+    for test in test_set:
+        a = recursive_matrix_chain(test)[1]
+        b = memoized_matrix_chain(test)[1]
+        x.append(i)
+        y1.append(a)
+        y2.append(b)
+        i += 1
+
+    plt.plot(x, y1, color='red')
+    plt.plot(x, y2, color='green')
+
+    p1 = plt.Rectangle((0, 0), 0.1, 0.1, fc='red')
+    p2 = plt.Rectangle((0, 0), 0.1, 0.1, fc='green')
+
+    plt.xlabel('This is my x-axis')
+    plt.ylabel('This is your y-axis')
+    plt.title("This is our title")
+
+    plt.legend((p1, p2), ('line1', 'line2'), loc='upper left')
+
+    plt.grid()
+    plt.show()
+
+if __name__ == '__main__':
+    scatter_style()
+    lines_style()
