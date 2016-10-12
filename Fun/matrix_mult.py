@@ -4,7 +4,9 @@ from random import randint, uniform
 import random
 from functools import wraps
 import matplotlib.pyplot as plt
+from pprint import pprint
 
+list_rand_int = lambda Lim, Len, Sign=0: [randint(Sign*Lim,Lim) for x in range(0,Len)]
 
 def wrap_text(text, highlight=None):
     if highlight is None:
@@ -53,12 +55,20 @@ def _recursive_matrix_chain(p,i,j):
 
 @timer
 def memoized_matrix_chain(p):
-    n = len(p)-1
-    m = [[]] * (n+1)
-    for i in range(0, n+1):
-        for j in range(i, n+1):
-            m[i].append(sys.maxint)
-    return _lookup_chain(m, p, 0, n)
+    n = len(p)
+    temp = xrange(0, n)
+    m = [[0 for _ in temp] for _ in temp]
+
+    # m = [None] * (n+1)
+    # for i in range(0, n + 1):
+    #     m[i] = []
+    #     for j in range(0, n + 1):
+    #         m[i].append(0)
+
+    for i in range(0, n):
+        for j in range(i, n):
+            m[i][j] = sys.maxint
+    return _lookup_chain(m, p, 0, n-1)
 
 def _lookup_chain(m, p, i, j):
     if m[i][j] < sys.maxint:
@@ -72,6 +82,14 @@ def _lookup_chain(m, p, i, j):
                 m[i][j] = q
     return m[i][j]
 
-primes = [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
-print recursive_matrix_chain(primes)[0]
-print memoized_matrix_chain(primes)[0]
+array = [2, 4, 6, 3, 4, 7]
+print recursive_matrix_chain(array)[0]
+print memoized_matrix_chain(array)[0]
+
+array = [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+print recursive_matrix_chain(array)[0]
+print memoized_matrix_chain(array)[0]
+
+array = [56, 43, 57, 97, 99, 8, 1, 50, 79, 16, 89, 51, 20, 87, 11, 90]
+print recursive_matrix_chain(array)[0]
+print memoized_matrix_chain(array)[0]
