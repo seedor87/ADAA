@@ -65,7 +65,25 @@ def _longest_increasing_subsequence(x):
         k = P[k]
     return S[::-1]
 
+@timer
+def longest_increasing_subsequence2(p):
+    return _longest_increasing_subsequence2(p)
+
+def _longest_increasing_subsequence2(p):
+    n = len(p)
+    D = [0] * (n)
+    D[0] = 1
+    for i in range(1, n):
+        D[i] = 1
+        for j in range(0, i):
+            if p[j] < p[i] and D[j] + 1 > D[i]:
+                D[i] = D[j] + 1
+    return max(D)
+
+
 if __name__ == '__main__':
     for d in [[3,2,6,4,5,1], [0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15], [18,5,100,3,1,19,6,0,7,4,2]]:
         res, time = longest_increasing_subsequence(d)
+        print('a list of increasing sub-sequence of %s is %s in %s seconds' % (wrap_text(d, color.YELLOW), wrap_text(res, color.GREEN), wrap_text(time, color.PURPLE)))
+        res, time = longest_increasing_subsequence2(d)
         print('a list of increasing sub-sequence of %s is %s in %s seconds' % (wrap_text(d, color.YELLOW), wrap_text(res, color.GREEN), wrap_text(time, color.PURPLE)))
