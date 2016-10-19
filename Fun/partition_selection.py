@@ -75,7 +75,6 @@ primes = [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61,
 primes =randomize_in_place(primes)
 
 def main():
-    input = randomize_in_place(primes)
     print "\nInput: %s\nEnter a choice of ith smallest number, or q to quit--\n" % (input)
     while True:
         try:
