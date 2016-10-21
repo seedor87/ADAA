@@ -55,7 +55,7 @@ def longest_common_subsequence_recursion(xstr, ystr):
 
 def _longest_common_subsequence_recursion(xstr, ystr):
     """
-    >>> longest_common_subsequence_recursion('thisisatest', 'testing123testing')
+    >>> longest_common_subsequence_recursion('thisisatest', 'testing123testing')[0]
     'tsitest'
     """
     if not xstr or not ystr:
@@ -98,13 +98,13 @@ def _longest_common_subsequence_dynamic(a, b):
 
 if __name__ == '__main__':
 
-    # import doctest
-    #
-    # doctest.testmod()
+    import doctest
+
+    doctest.testmod()
 
     Elems = 'abcdefghijklmenopqrstuvwxyz'
-    input1 = rand_list_rand_len(Len=26, Elems=Elems)
-    input2 = rand_list_rand_len(Len=26, Elems=Elems)
+    input1 = rand_list_rand_len(Len=15, Elems=Elems)
+    input2 = rand_list_rand_len(Len=15, Elems=Elems)
 
     print input1
     print input2
