@@ -76,6 +76,40 @@ def _lookup_chain(m, p, i, j):
                 m[i][j] = q
     return m[i][j]
 
+@timer
+def matrix_chain_order(p):
+
+    def print_optimal_parenthization(s, i, j):
+        if i == j:
+            return "A%s: " % i + str(p[i])
+        else:
+            k = s[i][j]
+            left = print_optimal_parenthization(s, i, k)
+            right = print_optimal_parenthization(s, k+1, j)
+            return "(%s * %s)" % (left, right)
+
+    n = len(p)
+    m = [[0 for x in range(n)] for x in range(n)]
+    s = [[0 for x in xrange(n)] for x in xrange(n)]
+
+    for i in range(1, n):
+        m[i][i] = 0
+
+    for L in range(2, n):
+        for i in range(1, n - L + 1):
+            j = i + L - 1
+            m[i][j] = sys.maxint
+
+            for k in range(i, j):
+                q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j]
+                if q < m[i][j]:
+                    m[i][j] = q
+                    s[i][j] = k
+
+    # return m[1][n - 1]
+    print print_optimal_parenthization(s, 0, n-1)
+    print s
+
 
 def scatter_style(*y_args):
     colors = ['red', 'green', 'blue']
@@ -110,8 +144,7 @@ def lines_style(*y_args):
 
     return plt
 
-
-if __name__ == '__main__':
+def main1():
     test_set = [[2, 4, 6, 3, 4, 7],
                 [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37],
                 [56, 43, 57, 97, 99, 8, 1, 50, 79, 16, 89, 51, 20, 87, 90]]
@@ -137,6 +170,7 @@ if __name__ == '__main__':
     #             # [15, 91, 42, 67, 24, 11, 81, 54, 42, 25, 55, 93, 87, 13, 34, 26, 43, 98],
     #             # [53, 34, 3, 86, 61, 20, 2, 76, 12, 1, 29, 95, 93, 22, 56, 66, 44, 6, 14]]
 
+
     y1 = []
     y2 = []
     for test in test_set:
@@ -154,7 +188,6 @@ if __name__ == '__main__':
     plt.grid()
     plt.show()
 
-
     plt = lines_style(y1, y2)
 
     plt.xlabel('This is my x-axis')
@@ -163,3 +196,17 @@ if __name__ == '__main__':
 
     plt.grid()
     plt.show()
+
+def main2():
+
+    input = [5, 10, 3, 12, 5, 50, 6]
+    print recursive_matrix_chain(input)
+    print memoized_matrix_chain(input)
+
+def main3():
+
+    input = [5, 10, 3, 12, 5, 50]
+    print matrix_chain_order(input)
+
+if __name__ == '__main__':
+    main3()
