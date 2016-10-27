@@ -3,6 +3,7 @@ import sys, timeit
 from random import randint
 from functools import wraps
 import matplotlib.pyplot as plt
+from pprint import pprint
 
 list_rand_int = lambda Lim, Len, Sign=0: [randint(Sign*Lim,Lim) for x in range(0,Len)]
 
@@ -81,7 +82,7 @@ def matrix_chain_order(p):
 
     def print_optimal_parenthization(s, i, j):
         if i == j:
-            return "A%s: " % i + str(p[i])
+            return "A%s" % i
         else:
             k = s[i][j]
             left = print_optimal_parenthization(s, i, k)
@@ -106,10 +107,9 @@ def matrix_chain_order(p):
                     m[i][j] = q
                     s[i][j] = k
 
-    # return m[1][n - 1]
-    print print_optimal_parenthization(s, 0, n-1)
-    print s
-
+    print print_optimal_parenthization(s, 1, n-1)
+    pprint(s)
+    return m[1][n-1]
 
 def scatter_style(*y_args):
     colors = ['red', 'green', 'blue']
@@ -199,7 +199,7 @@ def main1():
 
 def main2():
 
-    input = [5, 10, 3, 12, 5, 50, 6]
+    input = [5, 10, 3, 12, 5, 50]
     print recursive_matrix_chain(input)
     print memoized_matrix_chain(input)
 
