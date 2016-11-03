@@ -26,32 +26,43 @@ def _quicksort(List, p, r):
 def solver(List):
 
     def print_res(S):
-        for key, val in S.iteritems():
-            print '%s->%s:\t%s' % (key, key+1, val)
+        if isinstance(S, dict):
+            for key, val in S.iteritems():
+                print '%s<%s:\t%s' % (key, key+1, val)
+        else:
+            for i in range(len(S)):
+                print '%s<%s:\t%s' % (i,i+1, S[i])
 
-    # S is list of numbers that are bucket sorted in to the key corresponding gto their floor division
-    lim = int(List[-1]) + 1
-    S ={}
-    for i in range(lim):
-        S[i] = []
+    if len(List) > 0:
+        # Method A - works on unsorted array
+        # S = []
+        # for i in range(int(max(List))+1):
+        #     S.append([])
+        # for i in List:
+        #     S[int(i)].append(i)
+        # print_res(S)
 
-    for i in List:
-        S[int(i)].append(i)
+        # Method B - works only on sorted array
+        lim = int(List[-1]) + 1
+        S = {}
+        for i in range(lim):
+            S[i] = []
 
-    # # For each element i in Y, if i < current index of s, add to list at index of s, else increment index and add it to next
-    # index = 1
-    # for i in Y:
-    #     if i < index:
-    #         S[index-1].append(i)
-    #     elif i == index:
-    #         index += 1
-    #         S[index - 1].append(i)
-    #     else: # i > index
-    #         index += int(i)
-    #         S[index - 1].append(i)
+        index = 0
+        for i in List:
+            if i >= index+1:
+                while i >= index + 1:
+                    index += 1
+            S[index].append(i)
+        print_res(S)
+    else:
+        print "--Empty List--"
 
-    print_res(S)
-
-solver([0.0, 1.2, 3.0])
+solver([0.0, 0.1, 3.0])
+print '-' * 100
 solver([0.7, 1.0, 2.3, 2.6, 2.9, 3.0, 3.1, 3.6, 3.9, 4.2, 4.7, 5.2, 5.5, 10.0, 10.1])
+print '-' * 100
+solver([3.5])
+print '-' * 100
+solver([])
 
