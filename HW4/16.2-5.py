@@ -29,17 +29,13 @@ def solver(List):
         for key, val in S.iteritems():
             print '%s->%s:\t%s' % (key, key+1, val)
 
-    n = len(List)
-    # first sort to obtain a list y
-    Y = quicksort(List)
-    lim = int(Y[-1]) + 1
-
     # S is list of numbers that are bucket sorted in to the key corresponding gto their floor division
+    lim = int(List[-1]) + 1
     S ={}
     for i in range(lim):
         S[i] = []
 
-    for i in Y:
+    for i in List:
         S[int(i)].append(i)
 
     # # For each element i in Y, if i < current index of s, add to list at index of s, else increment index and add it to next
@@ -57,5 +53,5 @@ def solver(List):
     print_res(S)
 
 solver([0.0, 1.2, 3.0])
-solver([0.7, 1.0, 3.0, 2.9, 10.1, 2.3, 2.6, 3.1, 3.6, 3.9, 4.7, 4.2, 10.0, 5.2, 5.5])
+solver([0.7, 1.0, 2.3, 2.6, 2.9, 3.0, 3.1, 3.6, 3.9, 4.2, 4.7, 5.2, 5.5, 10.0, 10.1])
 
