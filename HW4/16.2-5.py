@@ -33,16 +33,15 @@ def solver(List):
             for i in range(len(S)):
                 print '%s<%s:\t%s' % (i,i+1, S[i])
 
-    if len(List) > 0:
-        # Method A - works on unsorted array
-        # S = []
-        # for i in range(int(max(List))+1):
-        #     S.append([])
-        # for i in List:
-        #     S[int(i)].append(i)
-        # print_res(S)
+    def method_A(List): # Method A - works on unsorted array
+        S = []
+        for i in range(int(max(List))+1):
+            S.append([])
+        for i in List:
+            S[int(i)].append(i)
+        print_res(S)
 
-        # Method B - works only on sorted array
+    def method_B(List): # Method B - works only on sorted array
         lim = int(List[-1]) + 1
         S = {}
         for i in range(lim):
@@ -55,6 +54,9 @@ def solver(List):
                     index += 1
             S[index].append(i)
         print_res(S)
+
+    if len(List) > 0:
+        method_B(List)
     else:
         print "--Empty List--"
 
