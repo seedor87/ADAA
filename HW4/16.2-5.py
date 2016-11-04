@@ -23,48 +23,57 @@ def _quicksort(List, p, r):
        _quicksort(List, q+1, r)
     return List
 
-def solver(List):
+def solver(List, n=2, sort=False):
 
-    def print_res(S):
+    def print_res(S, n):
         if isinstance(S, dict):
             for key, val in S.iteritems():
-                print '%s<%s:\t%s' % (key, key+1, val)
+                print '%s<%s:\t%s' % (key, key+n, val)
         else:
             for i in range(len(S)):
-                print '%s<%s:\t%s' % (i,i+1, S[i])
+                print '%s<%s:\t%s' % (i,i+n, S[i])
 
-    def method_A(List): # Method A - works on unsorted array
-        S = []
-        for i in range(int(max(List))+1):
-            S.append([])
-        for i in List:
-            S[int(i)].append(i)
-        print_res(S)
-
-    def method_B(List): # Method B - works only on sorted array
-        lim = int(List[-1]) + 1
+    def method_A(List, n): # Method A - works on unsorted array
+        lim = (int(List[-1])) / n
         S = {}
-        for i in range(lim):
-            S[i] = []
+        for i in range(lim + 1):
+            S[i*n] = []
+
+        for i in List:
+            S[n*int(i/n)].append(i)
+        print_res(S, n)
+
+    def method_B(List, n): # Method B - works only on sorted array
+        lim = (int(List[-1])) / n
+        s = {}
+        for i in range(lim+1):
+            s[i*n] = []
 
         index = 0
         for i in List:
-            if i >= index+1:
-                while i >= index + 1:
-                    index += 1
-            S[index].append(i)
-        print_res(S)
+            if i >= index + n:
+                while i >= index + n:
+                    index += n
+            s[index].append(i)
+        print_res(s, n)
 
     if len(List) > 0:
-        method_B(List)
+        if sort:
+            List_ = quicksort(List)
+        else:
+            List_ = List
+        method_B(List_, n)
+        print '- - ' * 25
+        method_A(List_, n)
     else:
         print "--Empty List--"
 
-solver([0.0, 0.1, 3.0])
-print '-' * 100
-solver([0.7, 1.0, 2.3, 2.6, 2.9, 3.0, 3.1, 3.6, 3.9, 4.2, 4.7, 5.2, 5.5, 10.0, 10.1])
-print '-' * 100
-solver([3.5])
-print '-' * 100
+n = 1
+solver([0.0, 0.1, 3.0], n)
+print "=" * 100
+solver([0.7, 1.0, 2.3, 2.6, 2.9, 3.0, 3.1, 3.6, 3.9, 4.2, 4.7, 5.2, 5.5, 10.0, 10.1], n)
+print "=" * 100
+solver([3.5], n)
+print '=' * 100
 solver([])
 
