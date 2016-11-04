@@ -1,4 +1,22 @@
 
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
+
+def wrap_text(text, highlight=None):
+    if highlight is None:
+        return str(text)
+    else:
+        return '%s%s%s' %(highlight, text, color.END)
+
 # def solution(i, j):
 #     opts = []
 #     try:
@@ -22,34 +40,39 @@
 def solution(x, y):
 
     total = 0
+    result = []
     while len(x) > 0 and len(y) > 0:
         at_x, at_y = x.pop(0), y.pop(0)
         if at_x == at_y:
-            print "Pass Down\t\t", 0, at_y, y
+            print "Pass Over\t\t", wrap_text(str(0), color.GREEN), wrap_text(str(at_y), color.CYAN), wrap_text(str("Y: " + str(y)), color.PURPLE)
+            result.append(at_y)
             pass
         else:
             if len(x) > 0 and len(y) > 0:
                 if x[0] == at_y and at_x == y[0]:
-                    print "Twiddle\t\t", 0.5, at_x, at_y, y
-                    x.pop(0)
-                    y.pop(0)
+                    print "Twiddle\t\t\t", wrap_text(str(1), color.YELLOW), wrap_text(str(at_y), color.CYAN), wrap_text(str("Y: " + str(y)), color.PURPLE)
+                    result.append(y.pop(0))
+                    result.append(x.pop(0))
                     total += 1
             else:
-                print "Drop / Add", at_y, "->", 2, at_x, y
+                print "Drop / Add", wrap_text(str(at_y) + ' -> ' + str(at_x), color.CYAN), wrap_text(str(2), color.RED), wrap_text(str("Y: " + str(y)), color.PURPLE)
+                result.append(at_x)
                 total += 2
     if len(x) > len(y):
         while len(x) > 0:
             at_x = x.pop(0)
-            print "Insert from X\t", 1, at_x, x
+            print "Insert from X\t", wrap_text(str(1), color.YELLOW), wrap_text(str(at_x), color.CYAN), wrap_text(str("Y: " + str(y)), color.PURPLE)
+            result.append(at_x)
             total += 1
     elif len(y) > len(x):
         while len(y) > 0:
             at_y = y.pop(0)
-            print "Delete from Y\t",1, at_y, y
+            print "Delete from Y\t", wrap_text(str(1), color.YELLOW), wrap_text(str(at_y), color.CYAN), wrap_text(str("Y: " + str(y)), color.PURPLE)
             total += 1
     else:
         pass
     print "\t\t\t Tot:", total
+    print '\t\t\t Result:', ''.join(result)
 
 x = ""
 y = "Ha"
@@ -65,4 +88,8 @@ solution(list(x), list(y))
 
 x = "Health"
 y = "Heal"
+solution(list(x), list(y))
+
+x = "Help"
+y = "Hell"
 solution(list(x), list(y))
