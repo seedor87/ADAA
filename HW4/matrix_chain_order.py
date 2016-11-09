@@ -54,7 +54,7 @@ def matrix_chain_order(p):
     m = [[0 for x in range(n)] for x in range(n)]
     s = [[0 for x in xrange(n)] for x in xrange(n)]
 
-    for i in range(1, n):
+    for i in range(0, n):
         m[i][i] = 0
 
     for L in range(2, n):
