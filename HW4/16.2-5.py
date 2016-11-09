@@ -25,13 +25,23 @@ def _quicksort(List, p, r):
 
 def solver(List, n=2, sort=False):
 
-    def print_res(S, n):
+    def print_res_A_B(S, n):
         if isinstance(S, dict):
             for key, val in S.iteritems():
                 print '%s<%s:\t%s' % (key, key+n, val)
         else:
             for i in range(len(S)):
-                print '%s<%s:\t%s' % (i,i+n, S[i])
+                index = int(S[i][0])
+                print '%s<%s:\t%s' % (index,index+n, S[i])
+
+    def print_res_C(S):
+        index = 0
+        for elem in S:
+            if elem < 1:
+                pass
+            else:
+                print '@: %s<%s' % (index,index+1)
+            index += 1
 
     def method_A(A, n): # Method A - works on unsorted array
         lim = (int(A[-1])) / n
@@ -57,6 +67,41 @@ def solver(List, n=2, sort=False):
             s[index].append(i)
         return s
 
+    def method_C(A, n):  # Method C - works only on sorted array
+        lim = (int(A[-1])) / n      # lim = int(A[A.length -1])
+        S = [0 for _ in range(lim+1)]   # let s be a new array of length [lim+1], whose elements are new empty queues
+        total = 0
+        index = 0
+        for i in A:
+            if i >= index + n:  # this loop only fills in the incrementing of the value index to match closest bounding integer
+                while i >= index + n:
+                    index += n
+            if S[index] > 0:
+                pass
+            else:
+                S[index] += 1
+                total += 1
+        print_res_C(S)
+        return total
+
+    def method_D(A, n):
+        lim = (int(A[-1])) / n  # lim = int(A[A.length -1])
+        S = [0 for _ in range(lim+1)]   # let s be a new array of length [lim+1], whose elements are new empty queues
+        index, i, total = 0,0,0
+        while i < len(A):
+            at_A = A[i]
+            if at_A >= index + n:  # this loop only fills in the incrementing of the value index to match closest bounding integer
+                while at_A >= index + n:
+                    index += n
+            if S[index] > 0:
+                pass
+            else:
+                S[index] += 1
+                total += 1
+            i += 1
+        print_res_C(S)
+        return total
+
     if len(List) > 0:
         if sort:
             List_ = quicksort(List)
@@ -64,11 +109,17 @@ def solver(List, n=2, sort=False):
             List_ = List
         print 'Method B, answer to question:'
         s = method_B(List_, n)
-        print_res(s, n)
+        print_res_A_B(s, n)
         print '- - ' * 25
         print 'Method A, fastest, works on unsorted array:'
         s = method_A(List_, n)
-        print_res(s, n)
+        print_res_A_B(s, n)
+        print '- - ' * 25
+        print 'Method C, works to provide only most reduced solution:'
+        print 'total unit length indecies:\n', method_C(List_, n)
+        print '- - ' * 25
+        print 'Method D:\n'
+        print method_D(List_, n)
     else:
         print "--Empty List--"
 

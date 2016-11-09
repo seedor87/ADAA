@@ -2,7 +2,6 @@ from __future__ import division
 import sys, timeit
 from random import randint
 from functools import wraps
-import matplotlib.pyplot as plt
 from pprint import pprint
 
 list_rand_int = lambda Lim, Len, Sign=0: [randint(Sign*Lim,Lim) for x in range(0,Len)]
@@ -51,8 +50,8 @@ def matrix_chain_order(p):
             return "(%s * %s)" % (left, right)
 
     n = len(p)
-    m = [[0 for x in range(n)] for x in range(n)]
-    s = [[0 for x in xrange(n)] for x in xrange(n)]
+    m = [[0 for _ in range(n)] for _ in range(n)]
+    s = [[0 for _ in range(n)] for _ in range(n)]
 
     for i in range(1, n):
         m[i][i] = 0
@@ -72,10 +71,10 @@ def matrix_chain_order(p):
     pprint(s)
     return m[1][n-1]
 
-def main3():
+def main():
 
     input = [5, 10, 3, 12, 5, 50]
     print matrix_chain_order(input)
 
 if __name__ == '__main__':
-    main3()
+    main()
