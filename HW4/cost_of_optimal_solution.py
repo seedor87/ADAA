@@ -44,20 +44,19 @@ def solution(x, y):
     while len(x) > 0 and len(y) > 0:
         at_x, at_y = x.pop(0), y.pop(0)
         if at_x == at_y:
-            print "Pass Over\t\t", wrap_text(str(0), color.GREEN), wrap_text(str(at_y), color.CYAN), wrap_text(str("Y: " + str(y)), color.PURPLE)
+            print "Copy \t\t", wrap_text(str(0), color.GREEN), wrap_text(str(at_y), color.CYAN), wrap_text(str("Y: " + str(y)), color.PURPLE)
             result.append(at_y)
             pass
+        elif len(x) > 0 and len(y) > 0:
+            if x[0] == at_y and at_x == y[0]:
+                print "Twiddle\t\t\t", wrap_text(str(1), color.YELLOW), wrap_text(str(at_y), color.CYAN), wrap_text(str("Y: " + str(y)), color.PURPLE)
+                result.append(y.pop(0))
+                result.append(x.pop(0))
+                total += 1
         else:
-            if len(x) > 0 and len(y) > 0:
-                if x[0] == at_y and at_x == y[0]:
-                    print "Twiddle\t\t\t", wrap_text(str(1), color.YELLOW), wrap_text(str(at_y), color.CYAN), wrap_text(str("Y: " + str(y)), color.PURPLE)
-                    result.append(y.pop(0))
-                    result.append(x.pop(0))
-                    total += 1
-            else:
-                print "Drop / Add", wrap_text(str(at_y) + ' -> ' + str(at_x), color.CYAN), wrap_text(str(2), color.RED), wrap_text(str("Y: " + str(y)), color.PURPLE)
-                result.append(at_x)
-                total += 2
+            print "Drop / Add", wrap_text(str(at_y) + ' -> ' + str(at_x), color.CYAN), wrap_text(str(2), color.RED), wrap_text(str("Y: " + str(y)), color.PURPLE)
+            result.append(at_x)
+            total += 2
     if len(x) > len(y):
         while len(x) > 0:
             at_x = x.pop(0)
@@ -74,22 +73,72 @@ def solution(x, y):
     print "\t\t\t Tot:", total
     print '\t\t\t Result:', ''.join(result)
 
+def solution_2(x, y):
+
+    if not x or not y:
+        return len(x) if len(x) > len(y) else len(y)
+
+    total = 0
+    if len(x) > len(y):
+        total += len(x)-len(y)
+    else:
+        total += len(y)-len(x)
+
+    zipped = zip(x, y)
+    lim = len(zipped)-1
+    i = 0
+    while i < lim:
+        at_x, at_y = x[i], y[i]
+        if at_x == at_y:
+            total += 0
+        elif at_x == y[i+1] and at_y == x[i+1]:
+            i += 1
+            total += 1
+        else:
+            total += 2
+        i += 1
+    at_x, at_y = zipped[-1]
+    if at_x == at_y:
+        total += 0
+    else:
+        total += 2
+    return total
+
+x = "We typically apply dynamic programming t"
+y = "Dynamic programming typically applies to"
+solution(list(x), list(y))
+print solution_2(list(x), list(y))
+
 x = ""
 y = "Ha"
 solution(list(x), list(y))
+print solution_2(list(x), list(y))
+
 
 x = "He"
 y = "Ha"
 solution(list(x), list(y))
+print solution_2(list(x), list(y))
+
 
 x = "Hael"
 y = "Heal"
 solution(list(x), list(y))
+print solution_2(list(x), list(y))
+
 
 x = "Health"
 y = "Heal"
 solution(list(x), list(y))
+print solution_2(list(x), list(y))
+
 
 x = "Help"
 y = "Hell"
 solution(list(x), list(y))
+print solution_2(list(x), list(y))
+
+
+
+
+

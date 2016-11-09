@@ -1,28 +1,30 @@
 
-def longest_subsequence(List):
-    if len(List) < 1:
+def longest_subsequence(A):
+    if len(A) < 1:
         return 0
-    if len(List) < 2:
+    if len(A) < 2:
         return 1
-    n = len(List)
-    D = [0] * n
+
+    n = len(A) # A.length
+    D = [0] * n # let D be new array of length 1 to n
     D[n-1] = 1
-    index_max = n-1
-    max_so_far = 0
-    for i in xrange(n-2, -1, -1):
+    index_max = n-1 # tracking index of max value so far
+    max_so_far = 0 # value of max so far
+    for i in xrange(n-2, -1, -1): # for i = n-2 down to 0, inclusive
         D[i] = 1
-        for j in xrange(n-1, i, -1):
-            if List[i] < List[j] and D[j] + 1 > D[i]:
+        for j in xrange(n-1, i, -1): # for j in range j= n-1 down to i, exclusive
+            if A[i] < A[j] and D[j] + 1 > D[i]:
                 D[i] = D[j] + 1
-                if D[i] > max_so_far:
-                    index_max = i
+                if D[i] > max_so_far: # new value > max so far...
+                    index_max = i       # set tracking index and new max so far
                     max_so_far = D[i]
-    E = [List[index_max]]
+
+    E = [A[index_max]] # let E be new list of one element, A[index of final max so far]
     if max_so_far != 0:     # catch no increasing sequence found
-        while D[index_max] > 1 and D[index_max] > D[index_max+1]:
-            E.append(List[index_max+1])
+        while D[index_max] > 1 and D[index_max] > D[index_max+1]: # print sub list of A that is longest increasing sub-sequence
+            E.append(A[index_max + 1])
             index_max += 1
-    return len(E), E        # max of D is now the len of E
+    return len(E), E        # length of longest increasing subsequence of A (max of D), is now the len of E
 
 print longest_subsequence([7,5,6,1,2,7,5])
 
