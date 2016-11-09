@@ -1,3 +1,5 @@
+from pprint import pprint
+from prettytable import PrettyTable
 
 class color:
    PURPLE = '\033[95m'
@@ -75,67 +77,79 @@ def solution(x, y):
 
 def solution_2(x, y):
 
+    table = PrettyTable()
+    table.field_names = ["Operation:", "at_x:", "at_y:", "Index:", "Total:"]
+
     if not x or not y:
         return len(x) if len(x) > len(y) else len(y)
 
     total = 0
+    temp = []
     if len(x) > len(y):
-        total += len(x)-len(y)
+        temp = [("Insert", str(x).upper()) for x in x[total:]]
+    elif len(y) > len(x):
+        temp = [("Delete", str(y).upper()) for y in y[total:]]
     else:
-        total += len(y)-len(x)
+        pass
 
     zipped = zip(x, y)
     lim = len(zipped)-1
     i = 0
     while i < lim:
-        at_x, at_y = x[i], y[i]
+        at_x, at_y = str(x[i]).upper(), str(y[i]).upper()
         if at_x == at_y:
             total += 0
-        elif at_x == y[i+1] and at_y == x[i+1]:
-            i += 1
+            table.add_row(["Copy", str(at_x), str(at_y), str(i), str(total)])
+        elif at_x == str(y[i+1]).upper() and at_y == str(x[i+1]).upper():
             total += 1
+            table.add_row(["Twiddle 1", str(at_x), str(at_y), str(i), str(total)])
+            i += 1
+            table.add_row(["Twiddle 2", str(x[i]).upper(), str(y[i]).upper(), str(i), str(total)])
         else:
             total += 2
+            table.add_row(["Delete/Insert", str(at_y), str(at_x), str(i), str(total)])
         i += 1
-    at_x, at_y = zipped[-1]
+    at_x, at_y = str(zipped[-1][0]).upper(), str(zipped[-1][1]).upper()
     if at_x == at_y:
         total += 0
+        table.add_row(["Copy", str(at_x), str(at_y), str(i), str(total)])
     else:
         total += 2
+        table.add_row(["Delete/Insert", str(at_y), str(at_x), str(i), str(total)])
+    for set in temp:
+        total += 2
+        table.add_row([set[0], set[1], set[1], str(i), str(total)])
+        i += 1
+    print table
     return total
 
-x = "We typically apply dynamic programming t"
-y = "Dynamic programming typically applies to"
-solution(list(x), list(y))
+x = "We typically apply dynamic programming to"
+y = "Dynamic programming typically applies to "
 print solution_2(list(x), list(y))
+
 
 x = ""
 y = "Ha"
-solution(list(x), list(y))
 print solution_2(list(x), list(y))
 
 
 x = "He"
 y = "Ha"
-solution(list(x), list(y))
 print solution_2(list(x), list(y))
 
 
 x = "Hael"
 y = "Heal"
-solution(list(x), list(y))
 print solution_2(list(x), list(y))
 
 
 x = "Health"
 y = "Heal"
-solution(list(x), list(y))
 print solution_2(list(x), list(y))
 
 
 x = "Help"
 y = "Hell"
-solution(list(x), list(y))
 print solution_2(list(x), list(y))
 
 
