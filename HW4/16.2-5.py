@@ -89,16 +89,7 @@ def solver(List, n=2, sort=False):
         S = [0 for _ in range(lim+1)]   # let s be a new array of length [lim+1], whose elements are new empty queues
         index, i, total = 0,0,0
         while i < len(A):
-            at_A = A[i]
-            if at_A >= index + n:  # this loop only fills in the incrementing of the value index to match closest bounding integer
-                while at_A >= index + n:
-                    index += n
-            if S[index] > 0:
-                pass
-            else:
-                S[index] += 1
-                total += 1
-            i += 1
+            S[index] += 1
         print_res_C(S)
         return total
 
