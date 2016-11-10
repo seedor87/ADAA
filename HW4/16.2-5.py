@@ -34,13 +34,13 @@ def solver(List, n=2, sort=False):
                 index = int(S[i][0])
                 print '%s<%s:\t%s' % (index,index+n, S[i])
 
-    def print_res_C(S):
+    def print_res_C(S, n):
         index = 0
         for elem in S:
             if elem < 1:
                 pass
             else:
-                print '@: %s<%s' % (index,index+1)
+                print '@: %s<%s' % (index,index+n)
             index += 1
 
     def method_A(A, n): # Method A - works on unsorted array
@@ -69,7 +69,7 @@ def solver(List, n=2, sort=False):
 
     def method_C(A, n):  # Method C - works only on sorted array
         lim = (int(A[-1])) / n      # lim = int(A[A.length -1])
-        S = [0 for _ in range(lim+1)]   # let s be a new array of length [lim+1], whose elements are new empty queues
+        S = [0 for _ in range((lim+1)*n)]   # let s be a new array of length [lim+1], whose elements are new empty queues
         total = 0
         index = 0
         for i in A:
@@ -81,17 +81,23 @@ def solver(List, n=2, sort=False):
             else:
                 S[index] += 1
                 total += 1
-        print_res_C(S)
+        print_res_C(S, n)
         return total
 
     def method_D(A, n):
-        lim = (int(A[-1])) / n  # lim = int(A[A.length -1])
-        S = [0 for _ in range(lim+1)]   # let s be a new array of length [lim+1], whose elements are new empty queues
-        index, i, total = 0,0,0
-        while i < len(A):
-            S[index] += 1
-        print_res_C(S)
-        return total
+        S = {}
+        if A:
+            index, i, total = 0,0,1
+            at_A = A[index]
+            S[at_A] = []
+            for i in A:
+                if i > at_A+n:
+                    total += 1
+                    at_A = i
+                    S[at_A] = []
+                S[at_A].append(i)
+        print_res_A_B(S, n)
+        return len(S)
 
     if len(List) > 0:
         if sort:
@@ -109,7 +115,7 @@ def solver(List, n=2, sort=False):
         print 'Method C, works to provide only most reduced solution:'
         print 'total unit length indecies:\n', method_C(List_, n)
         print '- - ' * 25
-        print 'Method D:\n'
+        print 'Method D, the final decided solution to the homework4 q4'
         print method_D(List_, n)
     else:
         print "--Empty List--"
