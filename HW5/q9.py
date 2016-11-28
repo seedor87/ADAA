@@ -9,6 +9,8 @@ the total complexity is O(n + m^3 x |A|)
 @version 1.0.0
 @date 07/06/2012
 
+http://code.activestate.com/recipes/578161-string-matching-using-a-finit-state-machine/
+
 """
 
 def string_matching_FSM(text, pattern, m):
