@@ -13,47 +13,41 @@ http://code.activestate.com/recipes/578161-string-matching-using-a-finit-state-m
 
 """
 
-def string_matching_FSM(text, pattern, m):
-    """
-    text: is the input sequence;
-    pattern: is the transition function that define the pattern P we need to look for;
-    m: length of the pattern
-    """
-    s = 0
-    for i,c in enumerate(text):
-        s = pattern[s][c]
-        if s == m:
-            return i-m+1
+def Finite_Automaton_Matcher(T, P, m):
+    n = len(T)
+    q = 0
+    for i, c in enumerate(T):
+        print P[q][c]
+        q = P[q][c]
+        print q
+        if q == m:
+            print "Pattern occurs with shift", i-m
+            return i-m
     return -1
 
-import string as st
-def transition_function(pattern):
-    """
-    The main principle on building the transition function is to think about
-    the fact that every time we scan a new character from the input sequence
-    the suffix should match with the prefix of the pattern. If that is not
-    possible for every length of the suffix, the next state need to be the
-    initial, otherwise the length of the suffix that matches properly will be
-    exactly the next state.
-    """
-    alphabet = list('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~0123456789	')
-    # alphabet = st.ascii_letters+st.punctuation+st.digits+st.whitespace
-    m = len(pattern)
-    trans = [{c:0 for c in alphabet} for i in range(m)]
-    for s in range(m):
-        for c in alphabet:
-            k = min(m, s+1)
-            while (pattern[:s]+c)[-k:] != pattern[:k]:
-                k-=1
+def Compute_Transition_Function(P, alphabet):
 
-            trans[s][c]=k
+    m = len(P)
+    trans = [{c:0 for c in alphabet} for i in range(m)]
+    for q in range(m):
+        for a in alphabet:
+            k = min(m, q+1)
+            Pk = P[:k]
+            Pq = (P[:q]+a)[-k:]
+            while Pk != Pq:
+                k = k-1
+                Pk = P[:k]
+                Pq = (P[:q] + a)[-k:]
+            trans[q][a]=k
     return trans
 
 if __name__=='__main__':
+
     P = 'aabab'
     T = 'aaababaabaababaab'
-    trans = transition_function(P)
-    res = string_matching_FSM(T, trans, len(P))
+    alphabet = list('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~0123456789	')
+
+    trans = Compute_Transition_Function(P, alphabet)
+    res = Finite_Automaton_Matcher(T, trans, len(P))
     print 'trans', trans
-    print
     print 'res', res
