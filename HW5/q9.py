@@ -22,7 +22,6 @@ def Compute_Transition_Function(P, alphabet):
 
     m = len(P)
     trans = init_trans(P, alphabet)
-    # trans = [{c:0 for c in alphabet} for i in range(m)]
     for q in range(m):
         for a in alphabet:
             k = min(m, q+1)
@@ -32,7 +31,7 @@ def Compute_Transition_Function(P, alphabet):
                 k = k-1
                 Pk = P[:k]
                 Pq = (P[:q] + a)[-k:]
-            trans[q][ord(a)]=k
+            trans[q][ord(a)] = k
     return trans
 
 if __name__=='__main__':
@@ -42,8 +41,7 @@ if __name__=='__main__':
     # alphabet = list('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~0123456789	')
     alphabet = list('ab')
     trans = Compute_Transition_Function(P, alphabet)
-    print 'trans'
-    pprint(trans)
+    print 'trans', trans
     res = Finite_Automaton_Matcher(T, trans, len(P))
     print 'res', res
 

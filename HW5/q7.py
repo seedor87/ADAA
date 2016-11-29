@@ -29,8 +29,6 @@ def Rabin_Karp_Matcher(T, P, d, q):
     p = 0
     t = 0
     result = []
-    # pre-processing
-
     total_hits = 0
     successful_hits = 0
 
