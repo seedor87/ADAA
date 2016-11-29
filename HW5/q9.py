@@ -1,13 +1,9 @@
-"""
-Code exhibited at source,
-
-http://code.activestate.com/recipes/578161-string-matching-using-a-finit-state-machine/
-"""
+from pprint import pprint
 
 def Finite_Automaton_Matcher(T, trans, m):
     q = 0
     for i, c in enumerate(T):
-        q = trans[q][c]
+        q = trans[q][ord(c)]
         if q == m:
             print "Pattern occurs with shift", i-m
             return i-m
@@ -15,8 +11,18 @@ def Finite_Automaton_Matcher(T, trans, m):
 
 def Compute_Transition_Function(P, alphabet):
 
+    def init_trans(P, alphabet):
+        mx = max([ord(c) for c in alphabet])
+        ret = []
+        for i in range(len(P)):
+            ret.append([])
+            for j in range(mx+1):
+                ret[i].append(0)
+        return ret
+
     m = len(P)
-    trans = [{c:0 for c in alphabet} for i in range(m)]
+    trans = init_trans(P, alphabet)
+    # trans = [{c:0 for c in alphabet} for i in range(m)]
     for q in range(m):
         for a in alphabet:
             k = min(m, q+1)
@@ -26,7 +32,7 @@ def Compute_Transition_Function(P, alphabet):
                 k = k-1
                 Pk = P[:k]
                 Pq = (P[:q] + a)[-k:]
-            trans[q][a]=k
+            trans[q][ord(a)]=k
     return trans
 
 if __name__=='__main__':
@@ -36,7 +42,8 @@ if __name__=='__main__':
     # alphabet = list('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\]^_`{|}~0123456789	')
     alphabet = list('ab')
     trans = Compute_Transition_Function(P, alphabet)
-    print 'trans', trans
+    print 'trans'
+    pprint(trans)
     res = Finite_Automaton_Matcher(T, trans, len(P))
     print 'res', res
 
