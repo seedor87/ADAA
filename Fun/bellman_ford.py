@@ -40,17 +40,17 @@ def bellman_ford(graph, source):
 
 
 def test():
-    graph = {
-        'a': {'b': -1, 'c':  4},
-        'b': {'c':  3, 'd':  2, 'e':  2},
-        'c': {},
-        'd': {'b':  1, 'c':  5},
-        'e': {'d': -3}
-        }
-
-    d, p = bellman_ford(graph, 'a')
-    print d
-    print p
+    # graph = {
+    #     'a': {'b': -1, 'c':  4},
+    #     'b': {'c':  3, 'd':  2, 'e':  2},
+    #     'c': {},
+    #     'd': {'b':  1, 'c':  5},
+    #     'e': {'d': -3}
+    #     }
+    #
+    # d, p = bellman_ford(graph, 'a')
+    # print d
+    # print p
 
     graph = {
        's': {'t': 6, 'y': 7},
