@@ -52,20 +52,32 @@ def test():
     print d
     print p
 
-    assert d == {
-        'a':  0,
-        'b': -1,
-        'c':  2,
-        'd': -2,
-        'e':  1
-        }
+    graph = {
+       's': {'t': 6, 'y': 7},
+       't': {'x': 5, 'y': 8, 'z': -4},
+       'y': {'x': -3, 'z': 9},
+       'x': {'t': -2},
+       'z': {'s': 2, 'x': 7}
+    }
 
-    assert p == {
-        'a': None,
-        'b': 'a',
-        'c': 'b',
-        'd': 'e',
-        'e': 'b'
-        }
+    d, p = bellman_ford(graph, 's')
+    print d
+    print p
+
+    d, p = bellman_ford(graph, 'z')
+    print d
+    print p
+
+    graph = {
+        's': {'t': 6, 'y': 7},
+        't': {'x': 5, 'y': 8, 'z': -4},
+        'y': {'x': -3, 'z': 9},
+        'x': {'t': -2},
+        'z': {'s': 2, 'x': 4}
+    }
+
+    d, p = bellman_ford(graph, 'z')
+    print d
+    print p
 
 if __name__ == '__main__': test()
