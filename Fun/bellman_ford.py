@@ -23,21 +23,22 @@ def relax(node, neighbour, graph, d, p):
         # Record this lower distance
         d[neighbour]  = d[node] + graph[node][neighbour]
         p[neighbour] = node
+    return d[neighbour], p[neighbour]
 
 def bellman_ford(graph, source):
     d, p = initialize(graph, source)
+    print d, p
     for i in range(len(graph)-1): #Run this until is converges
-        for u in graph:
-            for v in graph[u]: #For each neighbour of u
-                relax(u, v, graph, d, p) #Lets relax it
+        for u, v in [('t','x'), ('t','y'), ('t','z'), ('x','t'), ('y','x'), ('y','z'), ('z','x'), ('z','s'), ('s','t'), ('s','y')]:
+            d_, p_ = relax(u, v, graph, d, p)
+            print "%s, %s, %s, %s" % (u, v, d_, p_) #Lets relax it
 
     # Step 3: check for negative-weight cycles
-    for u in graph:
-        for v in graph[u]:
-            assert d[v] <= d[u] + graph[u][v]
+    for u, v in [('t', 'x'), ('t', 'y'), ('t', 'z'), ('x', 't'), ('y', 'x'), ('y', 'z'), ('z', 'x'), ('z', 's'), ('s', 't'), ('s', 'y')]:
+        print u, v, d[v] , ">", d[u] , "+", graph[u][v]
+        assert d[v] <= d[u] + graph[u][v]
 
     return d, p
-
 
 def test():
     # graph = {
@@ -68,6 +69,8 @@ def test():
     print d
     print p
 
+    print "-" *(100)
+
     graph = {
         's': {'t': 6, 'y': 7},
         't': {'x': 5, 'y': 8, 'z': -4},
@@ -79,5 +82,6 @@ def test():
     d, p = bellman_ford(graph, 'z')
     print d
     print p
+
 
 if __name__ == '__main__': test()
