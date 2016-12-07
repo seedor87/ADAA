@@ -1,7 +1,7 @@
 import sys
+from sys import stdout
 
 def Floyd_Warshall(G):
-
     dist = {}
     pred = {}
     for u in G:
@@ -25,21 +25,6 @@ def Floyd_Warshall(G):
 
     return dist, pred
 
-
-
-graph = {0 : {1:6, 2:8},
-         1 : {4:11},
-         2 : {3:9},
-         3 : {},
-         4 : {5:3},
-         5 : {2:7, 3:4}}
-
-dist, pred = Floyd_Warshall(graph)
-print "Predecessors in shortest path:"
-for v in pred: print "%s: %s&" % (v, pred[v])
-print "Shortest distance from each vertex:"
-for v in dist: print "%s: %s" % (v, dist[v])
-
 graph = {0 : {0:0, 1:1, 2:4, 3:10, 4:16, 5:5, 6:20},
          1 : {0:6, 1:0, 2:2, 3:14, 4:19, 5:2, 6:15},
          2 : {0:11, 1:13, 2:0, 3:2, 4:3, 5:17, 6:5},
@@ -48,14 +33,18 @@ graph = {0 : {0:0, 1:1, 2:4, 3:10, 4:16, 5:5, 6:20},
          5 : {0:1, 1:20, 2:15, 3:2, 4:6, 5:0, 6:17},
          6 : {0:18, 1:3, 2:13, 3:8, 4:11, 5:2, 6:0}}
 
-# graph = [[0, 1, 4, 10, 16, 5, 20],
-#          [6, 0, 2, 14, 19, 2, 15],
-#          [11, 13, 0, 2, 3, 17, 5,],
-#          [4, 22, 15, 0, 1, 18, 12,],
-#          [21, 3, 10, 5, 0, 10, 21],
-#          [1, 20, 15, 2, 6, 0, 17],
-#          [18, 3, 13, 8, 11, 2, 0]]
-
+print 'GRAPH:'
+keys = list(xrange(0,7))
+stdout.write('\t ')
+for i in keys:
+    stdout.write("%d  " % i)
+    stdout.flush()
+stdout.write("\n")
+for row in keys:
+    stdout.write('%d:\t%s\n' % (row, [graph[row][w] for w in graph[row]]))
+stdout.flush()
+print
+print 'ANSWERS:'
 dist, pred = Floyd_Warshall(graph)
 print "Predecessors in shortest path:"
 for v in pred: print "%s: %s&" % (v, pred[v])

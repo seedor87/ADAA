@@ -1,19 +1,16 @@
 import sys
-
-# Step 1: For each node prepare the destination and predecessor
+INF = sys.maxint
 def initialize(graph, source):
-    d = {} # Stands for destination
-    p = {} # Stands for predecessor
+    d = {}
+    p = {}
     for node in graph:
-        d[node] = sys.maxint # We start admitting that the rest of nodes are very very far
+        d[node] = INF
         p[node] = None
-    d[source] = 0 # For the source we know how to reach
+    d[source] = 0
     return d, p
 
 def relax(node, neighbour, graph, d, p):
-    # If the distance between the node and the neighbour is lower than the one I have now
     if d[neighbour] > d[node] + graph[node][neighbour]:
-        # Record this lower distance
         d[neighbour]  = d[node] + graph[node][neighbour]
         p[neighbour] = node
     return d[neighbour], p[neighbour]
@@ -29,9 +26,8 @@ def dijkstra(graph, source):
         S += u
         for u, v in adj_list(graph, u):
             d_, p_ = relax(u, v, graph, d, p)
-            print "%s, %s, %s, %s" % (u, v, d_, p_) # results to table
-            print 'D:', d
-            print 'P:', p
+            print "\t%s, %s, %s, %s" % (u, v, d_, p_) # results to table
+        print 's:', S
     return d, p
 
 def adj_list(graph, u):
