@@ -8,16 +8,17 @@ INF = sys.maxint
 def printSolution(distGraph):
     string = "inf"
     nodes =distGraph.keys()
+    print ' ',
     for n in nodes:
-        print "\t%6s"%(n),
+        print "%3s"%(n),
     print " "
     for i in nodes:
         print"%s"%(i),
         for j in nodes:
             if distGraph[i][j] == INF:
-                print "%10s"%(string),
+                print "%s"%(string),
             else:
-                print "%10s"%(distGraph[i][j]),
+                print "%3s"%(distGraph[i][j]),
         print" "
 
 def floydWarshall(graph):
