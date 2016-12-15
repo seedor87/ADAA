@@ -11,30 +11,34 @@ class node(object):
     def __repr__(self):
         return str(self.name)
 
-def find_set(x):
-    """non-recursive method to find_set using previously implemented node objects"""
-    ret = x
-    while ret is not ret.p:
+def find_set(a):
+    ret = a
+    while ret.p is not ret:
         ret = ret.p
-    while x is not ret:
-        temp = x.p
-        x.p = ret
-        x = temp
-    return ret, list
+    _a = a
+    next = a
+    while next is not ret:
+        next = _a.p
+        _a = ret
+    return ret
 
 x = node('x')
 y = node('y', x)
-z = node('z')
+z = node('z', y)
 a = node('a', z)
+b = node('b')
 
 print x, ':', find_set(x)
 print y, ':', find_set(y)
 print z, ':', find_set(z)
 print a, ':', find_set(a)
-print """>>> z.p = y"""
-z.p = y
+print """>>> z.p = b"""
+z.p = b
+print a, ':', find_set(a)
 print z, ':', find_set(z)
+print """>>> a.p = y"""
+a.p = y
+print y, ':', find_set(y)
 print a, ':', find_set(a)
-print """>>> a.p = a"""
-a.p = a
-print a, ':', find_set(a)
+print z, ':', find_set(z)
+

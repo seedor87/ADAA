@@ -52,19 +52,42 @@ def heapify(List):
             List[child], List[(child - 1) // 2] = List[(child - 1) // 2], List[child]
             child = child *2 + 1
 
+def print_path(p, curr):
+    if curr is None:
+        return 0
+    print_path(p, p[curr])
+    print curr
+
 def test():
 
+    # graph = {
+    #     's': {'t': 3, 'y': 5},
+    #     't': {'x': 6, 'y': 2},
+    #     'y': {'t': 1, 'z': 6, 'x': 4},
+    #     'x': {'z': 2},
+    #     'z': {'s': 3, 'x':7}
+    # }
+    #
+    # print dijkstra(graph, 's')
+    # print '-' * 100
+    # print dijkstra(graph, 'z')
+
     graph = {
-        's': {'t': 3, 'y': 5},
-        't': {'x': 6, 'y': 2},
-        'y': {'t': 1, 'z': 6, 'x': 4},
-        'x': {'z': 2},
-        'z': {'s': 3, 'x':7}
+        'u': {'x': 5, 'w': 3, 'v': 7},
+        'x': {'u': 5, 'w': 4, 'y': 7, 'z': 9},
+        'w': {'u': 3, 'x': 4, 'v': 3, 'y': 8},
+        'v': {'u': 7, 'w': 3, 'y': 4},
+        'y': {'x': 7, 'w': 8, 'v': 4, 'z': 2},
+        'z': {'x': 9, 'y': 2}
     }
 
-    print dijkstra(graph, 's')
+    d, p = dijkstra(graph, 'u')
+    print d, p
+    print_path(p, 'z')
     print '-' * 100
-    print dijkstra(graph, 'z')
+    d, p = dijkstra(graph, 'z')
+    print d, p
+    print_path(p, 'u')
 
 
 if __name__ == '__main__': test()

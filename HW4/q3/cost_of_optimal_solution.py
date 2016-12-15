@@ -113,6 +113,11 @@ x = "We typically apply dynamic programming to"
 y = "Dynamic programming typically applies to "
 print solution(list(x), list(y))
 
+para1 = """This part covers three important techniques used in designing and analyzing effic"""
+para2 = """Dynamic programming typically applies to optimization problems in which we make a"""
+print solution(list(para1), list(para2))
+
+
 
 
 

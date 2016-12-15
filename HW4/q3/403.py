@@ -1,20 +1,8 @@
 strx = "algorithm"
 stry = "altruistic"
 
-para1 = """This part covers three important techniques used in designing and analyzing effi-
-cient algorithms:  dynamic programming (Chapter 15), greedy algorithms (Chap-
-ter 16),  and amortized analysis  (Chapter 17).  Earlier parts have presented  other
-widely applicable techniques, such as divide-and-conquer, randomization, and how
-to solve recurrences. The techniques in this part are somewhat more sophisticated,
-but they help us to attack many computational problems. The themes introduced in
-this part will recur later in this book."""
-para2 = """Dynamic programming typically applies to optimization problems in which we
-make  a  set  of  choices  in  order  to  arrive  at  an  optimal  solution.   As  we  make
-each choice,  subproblems  of the same form often arise.  Dynamic programming
-is effective when a given subproblem may arise from more than one partial set of
-choices; the key technique is to store the solution to each such subproblem in case it
-should reappear. Chapter 15 shows how this simple idea can sometimes transform
-exponential-time algorithms into polynomial-time algorithms."""
+para1 = """This part covers three important techniques used in designing and analyzing effic"""
+para2 = """Dynamic programming typically applies to optimization problems in which we make a"""
 
 def cost(x,y):
     #x = ''.join(x.split())

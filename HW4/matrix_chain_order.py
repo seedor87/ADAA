@@ -5,6 +5,7 @@ from functools import wraps
 from pprint import pprint
 
 list_rand_int = lambda Lim, Len, Sign=0: [randint(Sign*Lim,Lim) for x in range(0,Len)]
+inf = sys.maxint
 
 def wrap_text(text, highlight=None):
     if highlight is None:
@@ -38,7 +39,7 @@ def timer(function):
 
 
 @timer
-def matrix_chain_order(p):
+def memoized_matrix_chain_order(p):
 
     def print_optimal_parenthization(s, i, j):
         if i == j:
@@ -59,7 +60,7 @@ def matrix_chain_order(p):
     for L in range(2, n):
         for i in range(1, n - L + 1):
             j = i + L - 1
-            m[i][j] = sys.maxint
+            m[i][j] = inf
 
             for k in range(i, j):
                 q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j]
@@ -71,10 +72,29 @@ def matrix_chain_order(p):
     pprint(s)
     return m[1][n-1]
 
+def recursive_matrix_chain_order(p, i, j):
+
+    if i == j:
+        return 0
+    q = inf
+    for k in range(i, j):
+
+        q = min(q, recursive_matrix_chain_order(p, i, k) +
+                recursive_matrix_chain_order(p, k+1, j) +
+                p[i - 1]*p[k]*p[j])
+    return q
+
+
+
 def main():
 
     input = [5, 10, 3, 12, 5, 50]
-    print matrix_chain_order(input)
+    print memoized_matrix_chain_order(input)
+
+    print
+
+    n = len(input)-1
+    print 'optimal result (using recursion): %s' % recursive_matrix_chain_order(input, 1, n)
 
 if __name__ == '__main__':
     main()

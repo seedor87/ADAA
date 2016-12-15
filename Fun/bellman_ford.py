@@ -28,17 +28,25 @@ def relax(node, neighbour, graph, d, p):
 def bellman_ford(graph, source):
     d, p = initialize(graph, source)
     print d, p
-    for i in range(len(graph)-1): #Run this until is converges
-        for u, v in [('t','x'), ('t','y'), ('t','z'), ('x','t'), ('y','x'), ('y','z'), ('z','x'), ('z','s'), ('s','t'), ('s','y')]:
+    for i in range(len(graph)-1): # Run this until is converges
+
+        for u, v in edges(graph):
             d_, p_ = relax(u, v, graph, d, p)
-            print "%s, %s, %s, %s" % (u, v, d_, p_) #Lets relax it
+            print "%s, %s, %s, %s" % (u, v, d_, p_) # Lets relax
 
     # Step 3: check for negative-weight cycles
-    for u, v in [('t', 'x'), ('t', 'y'), ('t', 'z'), ('x', 't'), ('y', 'x'), ('y', 'z'), ('z', 'x'), ('z', 's'), ('s', 't'), ('s', 'y')]:
+    for u, v in edges(graph):
         print u, v, d[v] , ">", d[u] , "+", graph[u][v]
         assert d[v] <= d[u] + graph[u][v]
 
     return d, p
+
+def edges(graph):
+    ret = []
+    for k, v in graph.iteritems():
+        for _k in v.keys():
+            ret.append((k, _k))
+    return ret
 
 def test():
     # graph = {

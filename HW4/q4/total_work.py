@@ -113,7 +113,7 @@ def solver(List, n=2, sort=False):
         print_res_A_B(s, n)
         print '- - ' * 25
         print 'Method C, works to provide only most reduced solution:'
-        print 'total unit length indecies:\n', method_C(List_, n)
+        print 'total unit length indices:\n', method_C(List_, n)
         print '- - ' * 25
         print 'Method D, the final decided solution to the homework4 q4'
         print method_D(List_, n)

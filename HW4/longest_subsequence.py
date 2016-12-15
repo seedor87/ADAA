@@ -20,23 +20,27 @@ def longest_subsequence(A):
                     max_so_far = D[i]
 
     E = [A[index_max]] # let E be new list of one element, A[index of final max so far]
+    ret_len = 1
     if max_so_far != 0:     # catch no increasing sequence found
-        while D[index_max] > 1 and D[index_max] > D[index_max+1]: # print sub list of A that is longest increasing sub-sequence
+        while D[index_max] > 1 and D[index_max] > D[index_max+1]: # print 'len seq: %s, seq: %s' % sub list of A that is longest increasing sub-sequence
             E.append(A[index_max + 1])
             index_max += 1
-    return len(E), E        # length of longest increasing subsequence of A (max of D), is now the len of E
+            ret_len += 1
+        return ret_len, E  # length of longest increasing subsequence of A (max of D), is now the len of E
+    else:
+        return ret_len, [] # empty list denotes no increasing subseq. of length > 2
 
-print longest_subsequence([7,5,6,1,2,7,5])
+print 'len seq: %s, seq: %s' % longest_subsequence([7,5,6,1,2,7,5])
 
-print longest_subsequence([4,5,6,1,2,7,5])
+print 'len seq: %s, seq: %s' % longest_subsequence([4,5,6,1,2,7,5])
 
-print longest_subsequence([7,6,4,3,2])
+print 'len seq: %s, seq: %s' % longest_subsequence([7,6,4,3,2])
 
-print longest_subsequence([1,2,3,4,5,6])
+print 'len seq: %s, seq: %s' % longest_subsequence([1,2,3,4,5,6])
 
-print longest_subsequence([-3,-2,-1,0,1,2,3])
+print 'len seq: %s, seq: %s' % longest_subsequence([-3,-2,-1,0,1,2,3])
 
-print longest_subsequence([2,5,-2,0,3,4,3,1])
+print 'len seq: %s, seq: %s' % longest_subsequence([2,5,-2,0,3,4,3,1])
 
-print longest_subsequence([4,3,2,1,2,3])
+print 'len seq: %s, seq: %s' % longest_subsequence([4,3,2,1,2,3])
 
