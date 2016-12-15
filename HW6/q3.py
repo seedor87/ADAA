@@ -1,6 +1,8 @@
 import sys
 from sys import stdout
 
+inf = sys.maxint
+
 def Floyd_Warshall(G):
     dist = {}
     pred = {}
@@ -8,7 +10,7 @@ def Floyd_Warshall(G):
         dist[u] = {}
         pred[u] = {}
         for v in G:
-            dist[u][v] = sys.maxint
+            dist[u][v] = inf
             pred[u][v] = -1
         dist[u][u] = 0
         for neighbor in G[u]:
